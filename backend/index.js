@@ -1,7 +1,4 @@
-// const express = require("express");
-// require("dotenv").config();
-// const cors = require("cors");
-// const kycRoutes = require("./routes/kyc");
+
 import dotenv from 'dotenv';
 dotenv.config()
 
