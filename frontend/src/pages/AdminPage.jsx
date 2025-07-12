@@ -13,7 +13,7 @@ export default function AdminPage() {
   const handleManualApprove = async () => {
     if (!manualWallet) return alert("Nhập địa chỉ ví");
 
-    const res = await fetch("http://localhost:5000/api/manual-approve", {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/manual-approve`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -36,28 +36,66 @@ export default function AdminPage() {
   });
   //
 
-  const fetchKycList = async (authToken) => {
-    setLoading(true);
-    try {
-      const res = await fetch("http://localhost:5000/api/kyc/all", {
-        headers: { Authorization: authToken },
-      });
-      const data = await res.json();
-      setList(data);
-    } catch (err) {
-      alert("Không thể tải danh sách KYC.");
-    }
-    setLoading(false);
-  };
+  // const fetchKycList = async (authToken) => {
+  //   setLoading(true);
+  //   try {
+  //     const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/all`, {
+  //       headers: { Authorization: authToken },
+  //     });
+  //     if (!res.ok || res.status === 204) {
+  //       alert("Không có dữ liệu KYC.44");
+  //       return;
+  //     }
+  //     const data = await res.json();
+  //     console.log("Dữ liệu KYC:", data);
+  //     setList(data);
+  //   } catch (err) {
+  //     alert("Không thể tải danh sách KYC.");
+  //   }
+  //   setLoading(false);
+  // };
 
-  const handleLogin = () => {
-    if (password === "123") {
-      // đồng bộ với .env
-      localStorage.setItem("adminToken", password);
-      setToken(password);
-      fetchKycList(password); // 👉 gọi sau khi token đã đúng
-    } else {
-      alert("Sai mật khẩu");
+  
+
+  // const handleLogin = () => {
+  //   if (password === "123") {
+  //     // đồng bộ với .env
+  //     localStorage.setItem("adminToken", password);
+  //     setToken(password);
+  //     fetchKycList(password); // 👉 gọi sau khi token đã đúng
+  //   } else {
+  //     alert("Sai mật khẩu");
+  //   }
+  // };
+
+
+  const handleLogin = async () => {
+    try {
+      console.log("Gửi yêu cầu đăng nhập:", { password });
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/admin/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password }),
+      });
+      console.log("Phản hồi đăng nhập:", { status: res.status, headers: res.headers.get("content-type") });
+      if (!res.ok) {
+        const err = await res.json();
+        console.error("❌ Đăng nhập không OK:", res.status, err);
+        alert(`Lỗi đăng nhập: ${err.error}`);
+        return;
+      }
+  
+      const data = await res.json();
+      console.log("JWT nhận được:", data.token);
+      localStorage.setItem("adminToken", data.token);
+      setToken(data.token);
+      fetchKycList(data.token); // Gọi fetchKycList với JWT
+      console.log("🔑 Đăng nhập thành công, token:", data.token);
+    } catch (err) {
+      console.error("Lỗi trong try-catch handleLogin:", err);
+      alert("Không thể đăng nhập.");
     }
   };
   const handleLogout = () => {
@@ -66,8 +104,53 @@ export default function AdminPage() {
     setList([]);
   };
 
+  const fetchKycList = async (authToken) => {
+    setLoading(true);
+    try {
+      const url = `${import.meta.env.VITE_API_BASE_URL}/api/kyc/all`;
+      console.log("🔑 Gửi auth token:", authToken);
+      console.log("API URL:", url);
+
+      const res = await fetch(url, {
+        method: "GET",
+        headers: { 
+          "Content-Type": "application/json",
+          // Authorization: authToken ,
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      console.log("Response status:", res.status);
+      console.log("Content-Type:", res.headers.get("content-type"));
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error("❌ res không OK:", {
+        status: res.status,
+        statusText: res.statusText,
+        errorText: errorText.slice(0, 200), // Giới hạn để dễ đọc
+      });
+      alert(`Không lấy được dữ liệu KYC. Status: ${res.status}, Error: ${errorText.slice(0, 200)}`);
+      return;
+    }
+
+      const data = await res.json();
+      console.log("Dữ liệu KYC:", data);
+      setList(data);
+    } catch (error) {
+      console.error("🚨 Lỗi trong fetchKycList:", {
+        message: error.message,
+        name: error.name,
+        stack: error.stack,
+      });
+      alert(`Không thể tải danh sách KYC: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const updateStatus = async (wallet, status, reason="") => {
-    await fetch("http://localhost:5000/api/kyc/update-status", {
+    await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/update-status`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -91,8 +174,9 @@ export default function AdminPage() {
   //
 
   useEffect(() => {
+    console.log("useEffect: Gọi fetchKycList với token:", token);
     if (token) fetchKycList(token);
-  }, []);
+  }, [token]);
 
   if (!token) {
     return (

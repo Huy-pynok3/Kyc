@@ -43,10 +43,11 @@ export default function HomePage() {
         />
 
       <div className="max-w-lg w-full bg-white rounded-xl shadow-md p-6 space-y-6 text-center">
-        <h1 className="text-3xl font-bold text-indigo-700">Dịch vụ KYC MapleStory N</h1>
+        <h1 className="text-3xl font-bold text-indigo-700">Service KYC MapleStory N</h1>
         <p className="text-gray-600">
-        Kết nối ví Metamask để bắt đầu xác minh danh tính. Sau khi xác minh,
+        📝 Để sử dụng dịch vụ KYC, vui lòng kết nối ví của bạn và xác nhận chữ ký. Sau khi KYC,
         bạn sẽ đủ điều kiện chơi MapleStory N hoặc nhận NXPC token.
+
         </p>
 
         <WalletConnect onSigned={handleSigned} />

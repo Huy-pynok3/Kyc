@@ -25,7 +25,7 @@ export default function KycPage() {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/check-payment?from=${walletData.wallet}`
+        `${import.meta.env.VITE_API_BASE_URL}/api/check-payment?from=${walletData.wallet}`
       );
       const data = await res.json();
       setPaymentResult(data);
@@ -43,7 +43,7 @@ export default function KycPage() {
     const checkExistingKyc = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/kyc/status/${walletData.wallet}`
+          `${import.meta.env.VITE_API_BASE_URL}/api/kyc/status/${walletData.wallet}`
         );
         const data = await res.json();
 
@@ -73,7 +73,7 @@ export default function KycPage() {
 
       console.log("Gửi thông tin:", payload);
 
-      const res = await fetch("http://localhost:5000/api/kyc/submit", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/submit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

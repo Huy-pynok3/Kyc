@@ -13,7 +13,7 @@ function App() {
             <Router>
                 {/* <Toaster richColors position="bottom-center" /> */}
                 <Toaster richColors offset={{top: '20px'}} mobileOffset={{ bottom: '16px' }} />
-                <ToastDisplay mode="real" /> {/* Hiển thị thông báo KYC mới */}
+                <ToastDisplay mode="random" /> {/* Hiển thị thông báo KYC mới */}
                 <WalletStatus />
                 <Routes>
                     <Route path="/" element={<HomePage />} />

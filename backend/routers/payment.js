@@ -169,7 +169,7 @@ router.post("/manual-approve", async (req, res) => {
 // Route lấy tất cả giao dịch thanh toán
 router.get("/latest-kyc", async (req, res) => {
     try {
-        const latest = await Payment.findOne({ status: "approved" })
+        const latest = await Payment.findOne({ status: "pending" })
             .sort({ confirmedAt: -1 })
             .limit(1);
         const wallet = latest?.from || null;

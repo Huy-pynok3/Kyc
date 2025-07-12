@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 
 // const emojis = ["🐸", "🦄", "🐼", "🧙‍♂️", "👾", "🦊", "🐢", "🐤"];
@@ -30,7 +30,7 @@ export default function ToastDisplay({ mode = "real" }) {
       } else {
         // Gọi backend lấy ví thật mới ký
         try {
-          const res = await fetch("http://localhost:5000/api/latest-kyc");
+          const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/latest-kyc`);
 
           const data = await res.json();
           wallet = data.wallet;

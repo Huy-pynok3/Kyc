@@ -10,7 +10,9 @@ export default function PaymentCheck({ wallet, onSuccess }) {
     const checkPayment = async () => {
       setChecking(true);
       try {
-        const res = await fetch(`http://localhost:5000/api/check-payment?from=${wallet}`);
+        setError(import.meta.env.VITE_API_BASE_URL);
+
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/check-payment?from=${wallet}`);
         const data = await res.json();
 
         if (data.success) {
@@ -19,7 +21,9 @@ export default function PaymentCheck({ wallet, onSuccess }) {
           setError(data.message || "Chưa phát hiện thanh toán");
         }
       } catch (err) {
+        console.error("Lỗi khi kiểm tra thanh toán:", err);
         setError("Lỗi khi kiểm tra thanh toán");
+
       }
       setChecking(false);
     };
