@@ -8,7 +8,7 @@ export default function FloatingMascots() {
           src="https://msu.io/_next/image?url=%2Fimages%2Fmain%2Fsection_c%2Forange.png&w=256&q=75"
           className="absolute bottom-40 right-40 animate-bounce"
           style={{ zIndex: 10 }}
-        />
+         />
         <img
           alt="pink bean"
           width={154}

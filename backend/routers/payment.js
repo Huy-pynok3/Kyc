@@ -33,6 +33,18 @@ router.get("/check-payment", async (req, res) => {
     }
 
     try {
+
+       // Check bank
+        const bankPayment = await Payment.findOne({ from, method: "bank" });
+        if (bankPayment) {
+            return res.json({
+                success: true,
+                method: "bank",
+                txHash: bankPayment.txHash,
+                amount: bankPayment.amount,
+            });
+        }
+
         // Check nếu đã được duyệt tay
         const manual = await Payment.findOne({ from, forceApproved: true });
         if (manual) {
@@ -63,6 +75,7 @@ router.get("/check-payment", async (req, res) => {
                 manual: true,
             });
         }
+
 
         // Check log thật từ USDT contract
         const currentBlock = await provider.getBlockNumber();
@@ -209,6 +222,8 @@ router.post("/manual-approve", async (req, res) => {
 //   });
 
 router.post("/webhook", async (req, res) => {
+    console.log("📩 Nhận webhook từ SePay:", req.body);
+
     const authHeader = req.headers["authorization"];
     const expectedKey = `Apikey ${process.env.SEPAY_SECRET_KEY}`;
 
@@ -216,10 +231,15 @@ router.post("/webhook", async (req, res) => {
         return res.status(403).json({ error: "Sai hoặc thiếu API Key" });
     }
 
-    const { txHash, from, amount, description } = req.body;
+    const { id, transferAmount, content, referenceCode } = req.body;
+
+    
+    const txHash = referenceCode || `sepay_${id}`;
+    const amount = transferAmount;
+    const description = content;
 
     // Kiểm tra bắt buộc
-    if (!txHash || !from || !amount || !description) {
+    if (!txHash || !amount || !description) {
         return res.status(400).json({ error: "Thiếu dữ liệu webhook" });
     }
     // Tách ví người dùng từ nội dung chuyển khoản
@@ -247,7 +267,6 @@ router.post("/webhook", async (req, res) => {
             txHash,
             amount,
             confirmedAt: new Date(),
-            status: "approved",
             method: "bank",
             //   forceApproved: true,
         });

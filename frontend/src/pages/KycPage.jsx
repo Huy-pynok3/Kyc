@@ -161,9 +161,9 @@ export default function KycPage() {
             className="min-h-screen flex flex-col items-center justify-center px-4 bg-gray-50"
             style={{
                 backgroundImage: `
-          url('/images/main/section_a/msu_symbol.png'),
-          url('https://msu.io/images/main/section_a/bg_section_a.png')
-          `,
+                url('/images/main/section_a/msu_symbol.png'),
+                url('https://msu.io/images/main/section_a/bg_section_a.png')
+                `,
                 backgroundRepeat: "no-repeat, no-repeat",
                 backgroundPosition: "calc(50% + 375px) -347px, 50%",
                 backgroundSize: "1410px auto, cover",
