@@ -23,7 +23,7 @@ export default function PaymentSection({
 
     // Reset timer khi đổi phương thức
     useEffect(() => {
-        setTimeLeft(method === "crypto" ? 600 : 10); // 10p hoặc 5p
+        setTimeLeft(method === "crypto" ? 600 : 60); // 10p hoặc 5p
         setExpired(false);
         onResetExpire(); //  báo lên KycPage để tiếp tục check-payment
     }, [method]);

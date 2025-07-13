@@ -210,7 +210,7 @@ router.post("/manual-approve", async (req, res) => {
 
 router.post("/webhook", async (req, res) => {
     const authHeader = req.headers["authorization"];
-    const expectedKey = `Bearer ${process.env.SEPAY_SECRET}`;
+    const expectedKey = `Apikey ${process.env.SEPAY_SECRET_KEY}`;
 
     if (authHeader !== expectedKey) {
         return res.status(403).json({ error: "Sai hoặc thiếu API Key" });
