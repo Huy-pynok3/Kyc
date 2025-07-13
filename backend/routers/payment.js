@@ -222,7 +222,9 @@ router.post("/manual-approve", async (req, res) => {
 //   });
 
 router.post("/webhook", async (req, res) => {
-    console.log("📩 Nhận webhook từ SePay:", req.body);
+    console.log("📩 Headers:", req.headers);
+    console.log("📩 Body:", req.body);
+
 
     const authHeader = req.headers["authorization"];
     const expectedKey = `Apikey ${process.env.SEPAY_SECRET_KEY}`;
@@ -243,7 +245,7 @@ router.post("/webhook", async (req, res) => {
         return res.status(400).json({ error: "Thiếu dữ liệu webhook" });
     }
     // Tách ví người dùng từ nội dung chuyển khoản
-    const matched = description?.match(/^SEVQR\+TKPTPT(0x[a-fA-F0-9]{40})$/);
+    const matched = description?.match(/^SEVQR\s+TKPTPT(0x[a-fA-F0-9]{40})$/);
 
     if (!matched) {
         return res.status(400).json({ error: "Không tìm thấy địa chỉ ví trong description" });
