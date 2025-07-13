@@ -22,32 +22,7 @@ export default function KycPage() {
     const hasPaidRef = useRef(false); // để tracking hasPaid đúng ngay lập tức
 
     const [expired, setExpired] = useState(false); // trạng thái hết hạn thanh toán
-    // const [showKycForm, setShowKycForm] = useState(false);
-    //
-    // Kiểm tra thanh toán khi trang được tải
-    // const checkPayment = async () => {
-    //     if (!walletData?.wallet) return;
-    //     setCheckingPayment(true);
 
-    //     try {
-    //         const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/check-payment?from=${walletData.wallet}`);
-    //         const data = await res.json();
-
-    //         if (data.success && !hasPaid) {
-    //           setJustPaid(true); // Hiện thông báo
-    //           setTimeout(() => {
-    //             setJustPaid(false);     // Tắt thông báo sau 4 giây
-    //           }, 4000);
-    //         }
-
-    //         setPaymentResult(data);
-    //         setHasPaid(data.success);
-    //     } catch (err) {
-    //         console.error("Lỗi khi kiểm tra giao dịch:", err);
-    //     }
-
-    //     setCheckingPayment(false);
-    // };
     const checkPayment = async () => {
       if (!walletData?.wallet) return;
       setCheckingPayment(true);
@@ -77,28 +52,16 @@ export default function KycPage() {
     // Kiểm tra thanh toán mỗi 5 giây
     useEffect(() => {
         const interval = setInterval(() => {
-            // if (expired) return; // Nếu đã hết hạn, không cần kiểm tra nữa
-            if (hasPaidRef.current || expired) return; // Nếu đã thanh toán, không cần kiểm tra nữa
+            // if(hasPaid) return
+            if (expired) return; // Nếu đã hết hạn, không cần kiểm tra nữa
+            if (hasPaidRef.current) return; // Nếu đã thanh toán, không cần kiểm tra nữa
 
             checkPayment();
         }, 5000); // 5s kiểm tra một lần
 
         return () => clearInterval(interval);
-    }, [expired]);
+    }, []);
 
-    // useEffect(() => {
-    //   if (justPaid) {
-    //     const audio = new Audio("/success.mp3");
-    //     audio.play();
-    //   }
-    // }, [justPaid]);
-    // useEffect(() => {
-    //   if (hasPaid) {
-    //     // Đợi nhẹ để user thấy thông báo đã thanh toán (nếu cần)
-    //     setTimeout(() => {
-    //     }, 1000);
-    //   }
-    // }, [hasPaid]);
     useEffect(() => {
         if (!walletData?.wallet) return navigate("/");
 
@@ -182,48 +145,8 @@ export default function KycPage() {
                             paymentResult={paymentResult}
                             qrUrl={walletData.qrUrl}
                             onExpire={() => setExpired(true)} // callback báo khi hết hạn
-                            onResetExpire={() => setExpired(false)} // callback để reset trạng thái hết hạn
                         />
-                        {/* <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded text-sm">
-              <p className="mb-2">
-                💰 Vui lòng chuyển <strong>5 USDT (BEP-20)</strong> đến địa chỉ:
-              </p>
-
-              <div className="bg-gray-100 p-3 rounded break-all text-sm font-mono text-gray-800 mb-4">
-                0x2fecd57da676a1c43c2fec4f47b3d7dc753db2e9
-              </div>
-
-              <p className="text-sm text-gray-600 mb-2 text-red-600">
-                Nếu bạn gửi từ sàn (Binance, OKX,...), vui lòng nhập địa chỉ ví bạn đã dùng để gửi:
-              </p>
-
-              <input
-                type="text"
-                placeholder="Ví bạn đã dùng để chuyển tiền"
-                className="w-full border rounded px-3 py-2 text-sm"
-              />
-                            <p className="mt-2">
-                Sau đó nhấn nút bên dưới để kiểm tra thanh toán.
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={checkPayment}
-              disabled={checkingPayment}
-              className="w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 mt-4"
-            >
-              {checkingPayment ? "Đang kiểm tra..." : "Tôi đã thanh toán"}
-            </button>
-
-
-            {paymentResult && !paymentResult.success && (
-              <div className="mt-3 text-sm text-red-600 bg-red-50 p-3 rounded">
-                ❌ {paymentResult.message || "Chưa phát hiện giao dịch hợp lệ."}
-                <br />
-                🕒 Vui lòng thử lại sau vài phút.
-              </div>
-            )} */}
+                      
                     </>
                 ) :
                 justPaid ? (

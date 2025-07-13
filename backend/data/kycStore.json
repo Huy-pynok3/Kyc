@@ -1,16 +1,1 @@
-{
-  "0x2fecd57da676a1c43c2fec4f47b3d7dc753db2e9": {
-    "email": "",
-    "mapleLink": "https://www.google.com/search?q=dich&rlz=1C1FKPE_enVN1146VN1146&oq=dich&gs_lcrp=EgZjaHJvbWUqEAgAEEUYExgnGDsYgAQYigUyEAgAEEUYExgnGDsYgAQYigUyBggBECMYJzIHCAIQABiABDIHCAMQABiABDIHCAQQABiABDISCAUQABgKGIMBGLEDGIAEGIoFMgcIBhAAGIAEMgcIBxAAGIAE0gEHNzA0ajBqNKgCALACAA&sourceid=chrome&ie=UTF-8",
-    "signature": "0x6380c1f736c96c3e41b0959db4ae34004b70575708a9e3348fad02d12f1248ae7f511e0b96fe75c4950ef54f7b593510548cc552807bc108369df850733c65f71c",
-    "status": "approved",
-    "submittedAt": "2025-07-10T10:45:11.711Z"
-  },
-  "0x4cb364a5f50ee884861672272c7e7092934ee2df": {
-    "email": "zinbavin@gmail.com",
-    "mapleLink": "http://localhost:5173/admin",
-    "signature": "0x48a18e98cdd81294f35f4f29dfdbd7e4273958cf9451f39ad246ae364448641e75316200894bfb5edf697c80fa458b1d45969856f7db278b128c591ddddf4e621b",
-    "status": "pending",
-    "submittedAt": "2025-07-11T04:41:03.160Z"
-  }
-}
+{}

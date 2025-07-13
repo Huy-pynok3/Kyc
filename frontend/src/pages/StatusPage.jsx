@@ -15,7 +15,8 @@ export default function StatusPage() {
     useEffect(() => {
         const fetchStatus = async () => {
             try {
-                const res = await fetch(`http://localhost:5000/api/kyc/status/${wallet}`);
+                const url = `${import.meta.env.VITE_API_BASE_URL}/api/kyc/status/${wallet}`
+                const res = await fetch(url);
                 const data = await res.json();
 
                 // if (!(data.status === 'approved' || data.forceApproved)) {
@@ -23,7 +24,7 @@ export default function StatusPage() {
                 //     navigate('/kyc');
                 //     return;
                 // }
-                if ((data.status === '' || data.forceApproved)) {
+                if ((data.status === '')) {
                     // 👈 Nếu không đủ điều kiện → chuyển hướng
                     navigate('/kyc');
                     return;
@@ -55,9 +56,9 @@ export default function StatusPage() {
             className="min-h-screen flex items-center justify-center px-4 bg-gray-50"
             style={{
                 backgroundImage: `
-        url('/images/main/section_a/msu_symbol.png'),
-        url('https://msu.io/images/main/section_a/bg_section_a.png')
-        `,
+                url('/images/main/section_a/msu_symbol.png'),
+                url('https://msu.io/images/main/section_a/bg_section_a.png')
+                `,
                 backgroundRepeat: 'no-repeat, no-repeat',
                 backgroundPosition: 'calc(50% + 375px) -347px, 50%',
                 backgroundSize: '1410px auto, cover',

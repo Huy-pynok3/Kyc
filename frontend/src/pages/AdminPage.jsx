@@ -1,3 +1,4 @@
+import { LucideBluetoothSearching } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 export default function AdminPage() {
@@ -13,11 +14,12 @@ export default function AdminPage() {
   const handleManualApprove = async () => {
     if (!manualWallet) return alert("Nhập địa chỉ ví");
 
-    const res = await fetch("http://localhost:5000/api/manual-approve", {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/manual-approve`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token,
+        Authorization: `Bearer ${token}`, // Sử dụng Bearer token
+        // Authorization: token, //fix
       },
       body: JSON.stringify({ wallet: manualWallet }),
     });
@@ -36,28 +38,66 @@ export default function AdminPage() {
   });
   //
 
-  const fetchKycList = async (authToken) => {
-    setLoading(true);
-    try {
-      const res = await fetch("http://localhost:5000/api/kyc/all", {
-        headers: { Authorization: authToken },
-      });
-      const data = await res.json();
-      setList(data);
-    } catch (err) {
-      alert("Không thể tải danh sách KYC.");
-    }
-    setLoading(false);
-  };
+  // const fetchKycList = async (authToken) => {
+  //   setLoading(true);
+  //   try {
+  //     const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/all`, {
+  //       headers: { Authorization: authToken },
+  //     });
+  //     if (!res.ok || res.status === 204) {
+  //       alert("Không có dữ liệu KYC.44");
+  //       return;
+  //     }
+  //     const data = await res.json();
+  //     console.log("Dữ liệu KYC:", data);
+  //     setList(data);
+  //   } catch (err) {
+  //     alert("Không thể tải danh sách KYC.");
+  //   }
+  //   setLoading(false);
+  // };
 
-  const handleLogin = () => {
-    if (password === "123") {
-      // đồng bộ với .env
-      localStorage.setItem("adminToken", password);
-      setToken(password);
-      fetchKycList(password); // 👉 gọi sau khi token đã đúng
-    } else {
-      alert("Sai mật khẩu");
+  
+
+  // const handleLogin = () => {
+  //   if (password === "123") {
+  //     // đồng bộ với .env
+  //     localStorage.setItem("adminToken", password);
+  //     setToken(password);
+  //     fetchKycList(password); // 👉 gọi sau khi token đã đúng
+  //   } else {
+  //     alert("Sai mật khẩu");
+  //   }
+  // };
+
+
+  const handleLogin = async () => {
+    try {
+      console.log("Gửi yêu cầu đăng nhập:", { password });
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/admin/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password }),
+      });
+      console.log("Phản hồi đăng nhập:", { status: res.status, headers: res.headers.get("content-type") });
+      if (!res.ok) {
+        const err = await res.json();
+        console.error("❌ Đăng nhập không OK:", res.status, err);
+        alert(`Lỗi đăng nhập: ${err.error}`);
+        return;
+      }
+  
+      const data = await res.json();
+      console.log("JWT nhận được:", data.token);
+      localStorage.setItem("adminToken", data.token);
+      setToken(data.token);
+      fetchKycList(data.token); // Gọi fetchKycList với JWT
+      console.log("🔑 Đăng nhập thành công, token:", data.token);
+    } catch (err) {
+      console.error("Lỗi trong try-catch handleLogin:", err);
+      alert("Không thể đăng nhập.");
     }
   };
   const handleLogout = () => {
@@ -66,16 +106,113 @@ export default function AdminPage() {
     setList([]);
   };
 
+  const fetchKycList = async (authToken) => {
+    setLoading(true);
+    try {
+      const url = `${import.meta.env.VITE_API_BASE_URL}/api/kyc/all`;
+      console.log("🔑 Gửi auth token:", authToken);
+      console.log("API URL:", url);
+
+      const res = await fetch(url, {
+        method: "GET",
+        headers: { 
+          "Content-Type": "application/json",
+          // Authorization: authToken ,
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      console.log("Response status:", res.status);
+      console.log("Content-Type:", res.headers.get("content-type"));
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      // Không lấy được dữ liệu KYC. Status: 401, Error: {"error":"Invalid token"}
+      if(errorText.includes("Invalid token")) {
+        alert("Token hết hạn hoặc không hợp lệ. Vui lòng đăng nhập lại.");
+      }
+      console.error("❌ res không OK:", {
+        status: res.status,
+        statusText: res.statusText,
+        errorText: errorText.slice(0, 200), // Giới hạn để dễ đọc
+      });
+      alert(`Không lấy được dữ liệu KYC. Status: ${res.status}, Error: ${errorText.slice(0, 200)}`);
+      return;
+    }
+
+      const data = await res.json();
+      console.log("Dữ liệu KYC:", data);
+      setList(data);
+    } catch (error) {
+      console.error("🚨 Lỗi trong fetchKycList:", {
+        message: error.message,
+        name: error.name,
+        stack: error.stack,
+      });
+      alert(`Không thể tải danh sách KYC: ${error.message}`); //token het han chang
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const updateStatus = async (wallet, status, reason="") => {
-    await fetch("http://localhost:5000/api/kyc/update-status", {
+    const url = `${import.meta.env.VITE_API_BASE_URL}/api/kyc/update-status`;
+    await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token,
+        Authorization: `Bearer ${token}` //fix
       },
       body: JSON.stringify({ wallet, status, reason }),
     });
     fetchKycList(token);
+  };
+  const deleteKyc = async (wallet) => {
+      // Hiển thị hộp thoại xác nhận
+    const confirmDelete = window.confirm(`Bạn có chắc chắn muốn xóa yêu cầu KYC của ví ${wallet}?`);
+    if (!confirmDelete) {
+      console.log("Hủy xóa KYC:", wallet);
+      return; // Người dùng hủy, không gửi yêu cầu
+    }
+    const url = `${import.meta.env.VITE_API_BASE_URL}/api/kyc/delete`;
+    try {
+      console.log("🔑 Gửi deleteKyc:", { wallet, token });
+      console.log("API URL:", url);
+  
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Dùng Bearer token
+        },
+        body: JSON.stringify({ wallet }),
+      });
+  
+      console.log("Response status:", response.status);
+      console.log("Content-Type:", response.headers.get("content-type"));
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("❌ Response không OK:", {
+          status: response.status,
+          statusText: response.statusText,
+          errorText: errorText.slice(0, 200),
+        });
+        alert(`Không thể xóa KYC. Status: ${response.status}, Error: ${errorText.slice(0, 200)}`);
+        return;
+      }
+  
+      const data = await response.json();
+      console.log("Kết quả deleteKyc:", data);
+      fetchKycList(token); // Cập nhật danh sách sau khi xóa
+    } catch (error) {
+      console.error("🚨 Lỗi trong deleteKyc:", {
+        message: error.message,
+        name: error.name,
+        stack: error.stack,
+      });
+      alert(`Không thể xóa KYC: ${error.message}`);
+    }
   };
   // Popup từ chối
   const confirmRejection = () => {
@@ -91,8 +228,9 @@ export default function AdminPage() {
   //
 
   useEffect(() => {
+    console.log("useEffect: Gọi fetchKycList với token:", token);
     if (token) fetchKycList(token);
-  }, []);
+  }, [token]);
 
   if (!token) {
     return (
@@ -154,7 +292,7 @@ export default function AdminPage() {
       ) : (
         <table className="w-full bg-white shadow rounded overflow-x-auto">
           <thead className="bg-gray-100 text-sm text-left">
-            <tr>
+            <tr >
               <th className="p-2">Ví</th>
               <th>Email</th>
               <th>Link Maple</th>
@@ -230,6 +368,26 @@ export default function AdminPage() {
                   >
                     Từ chối
                   </button>
+
+                  <button
+                    onClick={() =>
+                      window.open(
+                        `https://bscscan.com/address/${item.wallet}`,
+                        "_blank"
+                      )
+                    }
+                    className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
+                  >
+                    BscScan
+                  </button>
+
+                  <button
+                   onClick={() => deleteKyc(item.wallet)}
+                    className="bg-gray-400 text-white px-2 py-1 rounded text-xs"
+                  >   
+                  Cook    
+                  </button>
+
                 </td>
               </tr>
             ))}

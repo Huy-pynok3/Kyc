@@ -1,9 +1,9 @@
 import express from "express";
 import { ethers, parseUnits, isAddress, formatUnits } from "ethers";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
-
 dotenv.config();
+import Payment from "../models/payments.js";
+import { sendTelegramAlert } from "../services/telegramBot.js";
 
 const router = express.Router();
 
@@ -25,25 +25,6 @@ const ERC20_ABI = ["event Transfer(address indexed from, address indexed to, uin
 
 const usdt = new ethers.Contract(process.env.USDT_CONTRACT, ERC20_ABI, provider);
 
-// Model lưu giao dịch xác nhận
-const Payment = mongoose.model(
-    "Payment",
-    new mongoose.Schema({
-        from: String,
-        txHash: String,
-        amount: String,
-        status: {
-            type: String,
-            enum: ["pending", "approved", "rejected"],
-            default: "pending",
-        },
-        confirmedAt: Date,
-        forceApproved: Boolean,
-        //   forceApproved: { type: Boolean, default: false }
-        // Admin có thể đánh dấu giao dịch này là đã được phê duyệtforceApproved
-    })
-);
-
 // Route kiểm tra thanh toán
 router.get("/check-payment", async (req, res) => {
     const from = req.query.from?.toLowerCase();
@@ -55,8 +36,28 @@ router.get("/check-payment", async (req, res) => {
         // Check nếu đã được duyệt tay
         const manual = await Payment.findOne({ from, forceApproved: true });
         if (manual) {
+            // await sendTelegramAlert("payment", {
+            //     method: "crypto",
+            //     wallet: from,
+            //     amount: manual.amount,
+            //     txHash: manual.txHash || "Chưa có",
+            //     note: "Đã duyệt tay thanh toán",
+            // });
+            if (!manual.notified) {
+                await sendTelegramAlert("payment", {
+                    method: "crypto",
+                    wallet: manual.from,
+                    amount: manual.amount,
+                    note: "✅ Duyệt tay (forceApproved)",
+                });
+
+                manual.notified = true;
+                await manual.save(); // cập nhật flag đã gửi
+            }
+
             return res.json({
                 success: true,
+                method: "crypto",
                 txHash: manual.txHash,
                 amount: manual.amount,
                 manual: true,
@@ -116,8 +117,17 @@ router.get("/check-payment", async (req, res) => {
             confirmedAt: new Date(),
         });
 
+        // Gửi thông báo Telegram
+        await sendTelegramAlert("payment", {
+            method: "crypto",
+            wallet: from,
+            amount: formatUnits(match.args.value, DECIMALS),
+            txHash: match.transactionHash || "Chưa có",
+        });
+
         res.json({
             success: true,
+            method: "crypto",
             txHash: saved.txHash,
             amount: saved.amount,
         });
@@ -166,12 +176,94 @@ router.post("/manual-approve", async (req, res) => {
     }
 });
 
+//
+// router.post("/webhook", async (req, res) => {
+//     const { transId, description, amount, bankCode } = req.body;
+
+//     if (!description || !amount) {
+//       return res.status(400).json({ success: false, error: "Thiếu thông tin từ SePay" });
+//     }
+
+//     try {
+//       // Dùng description làm ví (đã gắn từ frontend)
+//       const wallet = description.toLowerCase();
+
+//       const existing = await Payment.findOne({ from: wallet });
+//       if (existing) {
+//         return res.json({ success: true, message: "Đã xử lý trước đó" });
+//       }
+
+//       await Payment.create({
+//         from: wallet,
+//         txHash: `sepay-${transId}`,
+//         amount,
+//         confirmedAt: new Date(),
+//         status: "approved",
+//       });
+
+//       res.json({ success: true });
+//     } catch (err) {
+//       console.error("Webhook SePay lỗi:", err);
+//       res.status(500).json({ success: false });
+//     }
+//   });
+
+router.post("/webhook", async (req, res) => {
+    const authHeader = req.headers["authorization"];
+    const expectedKey = `Bearer ${process.env.SEPAY_SECRET}`;
+
+    if (authHeader !== expectedKey) {
+        return res.status(403).json({ error: "Sai hoặc thiếu API Key" });
+    }
+
+    const { txHash, from, amount, description } = req.body;
+
+    // Kiểm tra bắt buộc
+    if (!txHash || !from || !amount || !description) {
+        return res.status(400).json({ error: "Thiếu dữ liệu webhook" });
+    }
+    // Tách ví người dùng từ nội dung chuyển khoản
+    const matched = description?.match(/^SEVQR\+TKPTPT(0x[a-fA-F0-9]{40})$/);
+
+    if (!matched) {
+        return res.status(400).json({ error: "Không tìm thấy địa chỉ ví trong description" });
+    }
+
+    const wallet = matched[1].toLowerCase();
+    // const wallet = description?.trim()?.toLowerCase();
+
+    if (!/^0x[a-fA-F0-9]{40}$/.test(wallet)) {
+        return res.status(400).json({ error: "Sai định dạng ví từ description" });
+    }
+
+    try {
+        const exists = await Payment.findOne({ txHash });
+        if (exists) {
+            return res.json({ success: false, message: "Giao dịch đã tồn tại" });
+        }
+
+        await Payment.create({
+            from: wallet,
+            txHash,
+            amount,
+            confirmedAt: new Date(),
+            status: "approved",
+            method: "bank",
+            //   forceApproved: true,
+        });
+
+        console.log("✅ Đã ghi nhận thanh toán SePay cho ví:", wallet);
+        res.json({ success: true });
+    } catch (err) {
+        console.error("❌ Lỗi xử lý webhook SePay:", err);
+        res.status(500).json({ error: "Lỗi server" });
+    }
+});
+
 // Route lấy tất cả giao dịch thanh toán
 router.get("/latest-kyc", async (req, res) => {
     try {
-        const latest = await Payment.findOne({ status: "approved" })
-            .sort({ confirmedAt: -1 })
-            .limit(1);
+        const latest = await Payment.findOne({ status: "pending" }).sort({ confirmedAt: -1 }).limit(1);
         const wallet = latest?.from || null;
         // res.json({ from: latest?.from || null });
         res.json({ wallet });

@@ -14,7 +14,7 @@ export default function StatusByWalletPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/kyc/status/${walletAddr}`);
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/status/${walletAddr}`);
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.error || "Lỗi truy vấn");
