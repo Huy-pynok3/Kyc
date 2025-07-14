@@ -245,7 +245,9 @@ router.post("/webhook", async (req, res) => {
         return res.status(400).json({ error: "Thiếu dữ liệu webhook" });
     }
     // Tách ví người dùng từ nội dung chuyển khoản
-    const matched = description?.match(/^SEVQR\s+TKPTPT(0x[a-fA-F0-9]{40})$/);
+    // const matched = description?.match(/^SEVQR\s+TKPTPT(0x[a-fA-F0-9]{40})$/);
+    const matched = description?.match(/TKPTPT(0x[a-fA-F0-9]{40})/);
+    // console.log("📩 Địa chỉ ví từ description:", matched);
 
     if (!matched) {
         return res.status(400).json({ error: "Không tìm thấy địa chỉ ví trong description" });
@@ -253,7 +255,9 @@ router.post("/webhook", async (req, res) => {
 
     const wallet = matched[1].toLowerCase();
     // const wallet = description?.trim()?.toLowerCase();
-
+    
+    console.log("📩 Ví người dùng:", wallet)
+    ;
     if (!/^0x[a-fA-F0-9]{40}$/.test(wallet)) {
         return res.status(400).json({ error: "Sai định dạng ví từ description" });
     }
@@ -271,6 +275,15 @@ router.post("/webhook", async (req, res) => {
             confirmedAt: new Date(),
             method: "bank",
             //   forceApproved: true,
+        });
+
+        // Gửi thông báo Telegram
+        await sendTelegramAlert("payment", {
+            method: "bank",
+            wallet,
+            amount,
+            txHash,
+            note: "✅ Thanh toán qua bank",
         });
 
         console.log("✅ Đã ghi nhận thanh toán SePay cho ví:", wallet);
