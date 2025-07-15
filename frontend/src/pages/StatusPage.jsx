@@ -91,7 +91,9 @@ export default function StatusPage() {
                         ) : status === 'rejected' ? (
                             <span className="text-red-600 font-semibold">KYC Từ chối</span>
                         ) : (
-                            <span className="text-yellow-600 font-semibold">KYC Đang chờ duyệt</span>
+                            <span className="text-yellow-600 font-semibold">
+                                KYC Đang chờ duyệt chung <span className="text-xs">(có thể mất vài giờ)</span>
+                            </span>
                         )}
                     </p>
 

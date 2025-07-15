@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import WalletConnect from "@/components/WalletConnect";
 import PaymentCheck from "@/components/PaymentCheck";
+import FloatingMascots from "@/components/FloatingMascots";
 export default function HomePage() {
   const [walletData, setWalletData] = useState(null);
   const navigate = useNavigate();
@@ -25,22 +26,7 @@ export default function HomePage() {
         }}
     >
       {/* <PaymentCheck /> */}
-        <img
-            alt="yeti"
-            width={154}
-            height={158}
-            src="https://msu.io/_next/image?url=%2Fimages%2Fmain%2Fsection_c%2Forange.png&w=256&q=75"
-            className="absolute bottom-40 right-40 animate-bounce"
-            style={{ zIndex: 10 }}
-        />
-        <img
-            alt="yeti"
-            width={154}
-            height={158}
-            src="https://msu.io/_next/image?url=%2Fimages%2Fmain%2Fsection_c%2Fpinkbean.png&w=256&q=75"
-            className="absolute top-50 left-50 animate-spin"
-            style={{ zIndex: 10 }}
-        />
+      <FloatingMascots/>
 
       <div className="max-w-lg w-full bg-white rounded-xl shadow-md p-6 space-y-6 text-center">
         <h1 className="text-3xl font-bold text-indigo-700">Service KYC MapleStory N</h1>
@@ -57,4 +43,3 @@ export default function HomePage() {
   
   );
 }
-// animate-bounce, animate-ping, animate-pulse, animate-spin.

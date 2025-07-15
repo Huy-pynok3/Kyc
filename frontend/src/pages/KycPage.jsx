@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FloatingMascots from "@/components/FloatingMascots";
 import PaymentSection from "./PaymentSection";
+import { Check } from "lucide-react";
 export default function KycPage() {
     const location = useLocation();
     const walletData = location.state;
@@ -169,13 +170,14 @@ export default function KycPage() {
                 backgroundSize: "1410px auto, cover",
             }}
         >
-            <FloatingMascots />
             <div className="bg-white p-6 rounded-xl shadow-md max-w-md w-full space-y-6">
 
 
                 {!hasPaid ? (
                     <>
+                        <FloatingMascots hidden={true} />
                         <PaymentSection
+
                             wallet={walletData.wallet}
                             checkingPayment={checkingPayment}
                             checkPayment={checkPayment}
@@ -227,6 +229,9 @@ export default function KycPage() {
                     </>
                 ) :
                 justPaid ? (
+                <>
+                    <FloatingMascots />
+
                   <div className="mb-4 bg-green-100 border border-green-300 text-green-800 px-4 py-4 rounded-lg shadow-md
                   transition-all duration-500 ease-in-out transform hover:scale-[1.01]">
                       <h3 className="text-sm font-semibold mb-1">💸 Thanh toán thành công!</h3>
@@ -238,55 +243,69 @@ export default function KycPage() {
                           Đóng
                       </button>
                   </div>
+                </>
               ) :
                 (!kycSubmitted) ? (
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
-                            <label className="block mb-1 text-sm font-medium text-gray-600">Email (tuỳ chọn):</label>
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="you@example.com"
-                                className="w-full px-3 py-2 border rounded-lg"
-                            />
-                        </div>
+                    <>
+                        <FloatingMascots />
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div>
+                                <label className="block mb-1 text-sm font-medium text-gray-600">Email (tuỳ chọn):</label>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="you@example.com"
+                                    className="w-full px-3 py-2 border rounded-lg"
+                                />
+                            </div>
 
-                        <div>
-                            <label className="block mb-1 text-sm font-medium text-gray-600">
-                                Link KYC từ MapleStory (bắt buộc):
-                            </label>
-                            <input
-                                type="url"
-                                value={mapleLink}
-                                onChange={(e) => setMapleLink(e.target.value)}
-                                placeholder="https://maplestorynexon.com/kyc?id=..."
-                                className="w-full px-3 py-2 border rounded-lg"
-                                required
-                            />
-                        </div>
+                            <div>
+                                <label className="block mb-1 text-sm font-medium text-gray-600">
+                                    Link KYC từ MapleStory (bắt buộc):
+                                </label>
+                                <input
+                                    type="url"
+                                    value={mapleLink}
+                                    onChange={(e) => setMapleLink(e.target.value)}
+                                    placeholder="https://maplestorynexon.com/kyc?id=..."
+                                    className="w-full px-3 py-2 border rounded-lg"
+                                    required
+                                />
+                            </div>
 
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700"
-                        >
-                            {loading ? "Đang xử lý..." : "Tạo phiên KYC"}
-                        </button>
-                    </form>
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700"
+                            >
+                                {loading ? "Đang xử lý..." : "Tạo phiên KYC"}
+                            </button>
+                        </form>
+
+                    </>
                 ) : (
-                    <div className="text-center">
-                        <p className="mb-2 text-green-600 font-semibold">✅ Đã ghi nhận thông tin!</p>
-                        <a href={`/status?wallet=${walletData.wallet}`} className="text-blue-600 underline">
-                            👉 Nhấn vào đây để kiểm tra kết quả KYC
-                        </a>
-                    </div>
+                    <>
+                        <FloatingMascots />
+                        <div className="text-center">
+                            <p className="mb-2 text-green-600 font-semibold">
+                                <Check size={20} className="text-green-600" />
+
+                                Đã ghi nhận thông tin!
+                            </p>
+
+                            <a href={`/status?wallet=${walletData.wallet}`} className="text-blue-600 underline">
+                                👉 Nhấn vào đây để kiểm tra kết quả KYC
+                            </a>
+                        </div>
+                    </>
                 )}
             </div>
             <div>
                 {walletData && (
                     <div className="mt-4 text-sm text-green-600">
-                        ✅ Đã ký xác nhận cho ví: <span className="font-mono">{walletData.wallet}</span>
+                        <Check size={20} className="inline mr-2" />
+                        Đã ký xác nhận cho ví: <span className="font-mono">{walletData.wallet}</span>
                     </div>
                 )}
             </div>
