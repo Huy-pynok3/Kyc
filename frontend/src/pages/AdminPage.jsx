@@ -154,7 +154,7 @@ export default function AdminPage() {
       setLoading(false);
     }
   };
-
+  
   const updateStatus = async (wallet, status, reason="") => {
     const url = `${import.meta.env.VITE_API_BASE_URL}/api/kyc/update-status`;
     await fetch(url, {
@@ -386,6 +386,13 @@ export default function AdminPage() {
                     className="bg-gray-400 text-white px-2 py-1 rounded text-xs"
                   >   
                   Cook    
+                  </button>
+
+                  <button
+                    onClick={() => updateStatus(item.wallet, "pending")}
+                    className="bg-yellow-600 text-white px-2 py-1 rounded text-xs"
+                  >
+                    Đặt lại
                   </button>
 
                 </td>

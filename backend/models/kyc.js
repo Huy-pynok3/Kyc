@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+mongoose.set("debug", true);
 
 const Kyc = mongoose.model(
     "Kyc",
@@ -9,13 +10,16 @@ const Kyc = mongoose.model(
         signature: String,
         status: {
           type: String,
-          enum: ["pending", "approved", "rejected"],
+          enum: ["pending", "approved", "rejected", "processing"],
           default: "pending",
         },
         submittedAt: { type: Date, default: Date.now },
         processedAt: Date,
         reason: String,
         forceApproved: { type: Boolean, default: false },
+        startedAt: {
+          type: Date,
+        },
       })
 );
 export default Kyc;

@@ -5,9 +5,10 @@ import { LogOut } from "lucide-react";
 import img from "@/images";
 
 export default function WalletStatus() {
+
     const { wallet, disconnectWallet } = useContext(WalletContext);
     const navigate = useNavigate();
-
+    
     if (!wallet) return null; // ❌ Không hiển thị gì nếu chưa có ví
 
     const handleDisconnect = () => {

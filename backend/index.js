@@ -6,8 +6,10 @@ import express from "express";
 import cors from "cors";
 import kycRoutes from "./routers/kyc.js";
 import paymentRoutes from "./routers/payment.js";
+import kycPublicRoutes from "./routers/kycPublic.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { startResetExpiredSessionsJob } from './jobs/resetExpiredSessions.js';
 
 dotenv.config();
 const app = express();
@@ -61,6 +63,7 @@ app.post("/api/admin/login", async (req, res) => {
 //   });
 
 app.use("/api/kyc", kycRoutes);
+app.use("/api/kyc", kycPublicRoutes);
 app.use("/api", paymentRoutes);
 
 app.use((err, req, res, next) => {
@@ -72,6 +75,10 @@ const PORT = process.env.PORT || 5001;
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("MongoDB connected");
+
+    // Start cronjob khi đã kết nối DB
+    startResetExpiredSessionsJob();
+
     app.listen(PORT, () => {
       console.log(`Server ready at http://localhost:${PORT}`);
     });
