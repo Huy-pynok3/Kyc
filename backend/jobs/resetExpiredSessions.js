@@ -10,7 +10,7 @@ export const startResetExpiredSessionsJob = () => {
       const expiredSessions = await Session.find({
         lastPingAt: { $lt: expiredTime }
       });
-      console.log(`[CRON] Số session hết hạn: ${expiredSessions.length}`);
+      console.log(`[CRON] So session het han: ${expiredSessions.length}`);
     //   console.log(`[DEBUG] expiredSessions:`, expiredSessions);
 
       for (const session of expiredSessions) {
@@ -18,6 +18,7 @@ export const startResetExpiredSessionsJob = () => {
         if (kyc && kyc.status === 'processing') {
             console.log(`[RESET] Chuẩn bị reset KYC ${kyc._id}`);
           kyc.status = 'pending';
+          kyc.startedAt = null; // Reset thời gian bắt đầu
           await kyc.save();
           console.log(`[RESET] KYC ${kyc._id} đặt lại 'pending' do session hết hạn`);
         }

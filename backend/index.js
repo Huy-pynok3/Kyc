@@ -65,6 +65,7 @@ app.post("/api/admin/login", async (req, res) => {
 app.use("/api/kyc", kycRoutes);
 app.use("/api/kyc", kycPublicRoutes);
 app.use("/api", paymentRoutes);
+app.use('/uploads', express.static('uploads'));
 
 app.use((err, req, res, next) => {
     console.error("Lỗi server:", err);
