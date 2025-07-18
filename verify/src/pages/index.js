@@ -4,7 +4,7 @@ import KycCountdownOverlay from "./KycCountdownOverlay";
 import HomePage from "./HomePage";
 import UploadPage from './UploadPage';
 import KycStatusPage from './KycStatusPage';
-import AdminPage from "./AdminPage";
+
 export {
     KycReceivePage,
     KycAvailablePage,
@@ -12,5 +12,4 @@ export {
     HomePage,
     UploadPage,
     KycStatusPage,
-    AdminPage,
 }
