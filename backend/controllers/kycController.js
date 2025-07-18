@@ -1,5 +1,5 @@
 
-import { Kyc, Payment } from "../models/index.js";
+import { Kyc, Payment, Session } from "../models/index.js";
 
 export const submitKyc = async (req, res) => {
     const { wallet, email, mapleLink, signature } = req.body;
@@ -137,3 +137,29 @@ export const getKycStatusByWallet = async (req, res) => {
       res.status(500).json({ error: "Lỗi khi truy vấn KYC." });
     }
   };
+
+//   router.get("/sessions", auth, async (req, res) => {
+
+//     const latestKyc = await Kyc.findOne({ status: "checking" }).sort({ startedAt: -1 });
+//     if (!latestKyc) {
+//         return res.status(404).json({ error: "Không có phiên KYC nào đang checking" });
+//     }
+//     const sessions = await Session.find({ kycId: latestKyc._id }).sort({ startedAt: -1 });
+//     res.json(sessions);
+// });
+
+export const getKycSessions = async (req, res) => { 
+    try {
+        const latestKyc = await Kyc.findOne({ status: "checking" }).sort({ startedAt: -1 });
+        // console.log("Kyc checking mới nhất:", latestKyc);
+
+        if (!latestKyc) {
+            return res.status(404).json({ error: "Không có phiên KYC nào đang checking" });
+        }
+        const sessions = await Session.find({ kycId: latestKyc._id }).sort({ startedAt: -1 });
+        res.json(sessions);
+    } catch (err) {
+        console.error("Lỗi khi lấy phiên KYC:", err);
+        res.status(500).json({ error: "Lỗi server." });
+    }
+}

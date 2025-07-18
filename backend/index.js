@@ -46,7 +46,7 @@ app.post("/api/admin/login", async (req, res) => {
         const token = jwt.sign({ role: "admin" }, JWT_SECRET, { expiresIn: "1h" });
         res.json({ message: "Đăng nhập thành công", token });
     } catch (error) {
-        console.error("Lỗi khi đăng nhập admin:", error);
+        // console.error("Lỗi khi đăng nhập admin:", error);
         res.status(500).json({ error: "Lỗi server" });
     }
 });
@@ -63,6 +63,7 @@ app.post("/api/admin/login", async (req, res) => {
 //   });
 
 app.use("/api/kyc", kycRoutes);
+
 app.use("/api/kyc", kycPublicRoutes);
 app.use("/api", paymentRoutes);
 app.use('/uploads', express.static('uploads'));

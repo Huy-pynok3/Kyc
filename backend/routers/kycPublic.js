@@ -2,10 +2,12 @@ import express from "express";
 import mongoose from "mongoose";
 import { Kyc, Session } from "../models/index.js";
 import upload from "../middlewares/upload.js";
+import verifyToken from '../middlewares/authToken.js';
+import auth from '../middlewares/auth.js';
 
 const router = express.Router();
 
-router.get("/info/:id", async (req, res) => {
+router.get("/info/:id", verifyToken, async (req, res) => {
     try {
         const kyc = await Kyc.findById(req.params.id);
         if (!kyc) return res.status(404).json({ error: "KYC không tồn tại" });
@@ -24,58 +26,14 @@ router.get("/info/:id", async (req, res) => {
     }
 });
 
-router.get("/available", async (req, res) => {
+router.get("/available", verifyToken, async (req, res) => {
     const availableKyc = await Kyc.find({ status: "pending" }).limit(20);
     res.json(availableKyc);
     console.log("Đã gửi danh sách KYC đang chờ");
     console.log("Số lượng KYC đang chờ:", availableKyc.length);
 });
 
-// router.post('/claim/:id', async (req, res) => {
-//   try {
-//     const claimed = await Kyc.findOneAndUpdate(
-//       { _id: req.params.id, status: 'pending' },
-//       { status: 'processing' },
-//       { new: true }
-//     );
-//     if (!claimed) return res.json({ success: false });
-//     res.json({ success: true });
-//   } catch {
-//     res.status(500).json({ success: false });
-//   }
-// });
-
-// router.post("/claim/:id", async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const { startedAt } = req.body;
-
-//         const kyc = await Kyc.findById(id);
-
-//         if (!kyc) {
-//             return res.json({ success: false, message: "Không tìm thấy đơn KYC" });
-//         }
-//         if (kyc.status !== "pending") {
-//             return res.json({ success: false, message: "Đơn này đã được xử lý rồi" });
-//         }
-//         // if (!kyc || kyc.status !== "pending") {
-//         //     console.log("Claiming KYC:", id, "startedAt:", startedAt);
-//         //     return res.json({ success: false, message: "Không thể nhận đơn" });
-//         // }
-
-//         kyc.status = "processing";
-//         kyc.startedAt = startedAt || new Date();
-//         await kyc.save();
-
-//         return res.json({ success: true });
-//         // if (!claimKyc) return res.json({ success: false });
-//     } catch {
-//         console.error("Lỗi khi claim KYC:", error);
-//         res.status(500).json({ success: false });
-//     }
-// });
-
-router.post("/start/:id", async (req, res) => {
+router.post("/start/:id",verifyToken, async (req, res) => {
     try {
         const { id } = req.params;
         console.log("Bắt đầu phiên KYC cho ID:", typeof id);
@@ -122,74 +80,8 @@ router.post("/start/:id", async (req, res) => {
     }
 });
 
-// router.post("/sessions/new", async (req, res) => {
-//     const { kycId, wallet, kycSessionId, emoji, startedAt, studentId } = req.body;
 
-//     if (!kycId || !wallet || !kycSessionId || !emoji || !startedAt) {
-//       return res.status(400).json({ error: "Thiếu dữ liệu đầu vào" });
-//     }
-
-//     try {
-//       const kyc = await Kyc.findById(kycId);
-//       if (!kyc || kyc.status !== "processing") {
-//         return res.status(400).json({ error: "Đơn KYC không hợp lệ" });
-//       }
-
-//       const kycSession = await Session.create({
-//         kycId,
-//         wallet,
-//         kycSessionId,
-//         emoji,
-//         startedAt,
-//         studentId,
-//       });
-
-//       res.json({ success: true, session: kycSession });
-//     } catch (err) {
-//       console.error("Lỗi tạo session:", err);
-//       res.status(500).json({ error: "Lỗi server" });
-//     }
-//   });
-
-//   router.post("/sessions/new", async (req, res) => {
-//     const { kycId, wallet, studentId } = req.body;
-
-//     if (!kycId || !wallet) {
-//       return res.status(400).json({ error: "Thiếu thông tin" });
-//     }
-
-//     try {
-//       let session = await Session.findOne({ kycId, wallet });
-
-//       if (!session) {
-//         const emojiList = ["🚀", "🦊", "🎯", "🔥", "🌟", "🍀"];
-//         const emoji = emojiList[Math.floor(Math.random() * emojiList.length)];
-//         const kycSessionId = "KYC#" + Math.random().toString(36).substring(2, 8).toUpperCase();
-
-//         const kyc = await Kyc.findById(kycId);
-//         if (!kyc || !kyc.startedAt) {
-//           return res.status(400).json({ error: "Đơn KYC không tồn tại hoặc chưa sẵn sàng" });
-//         }
-
-//         session = await Session.create({
-//           kycId,
-//           wallet,
-//           studentId,
-//           emoji,
-//           kycSessionId,
-//           startedAt: kyc.startedAt,
-//         });
-//       }
-
-//       res.json({ session });
-//     } catch (err) {
-//       console.error("Lỗi tạo/lấy session:", err);
-//       res.status(500).json({ error: "Lỗi server" });
-//     }
-//   });
-
-// POST /api/kyc/sessions/refresh
-router.post("/sessions/new", async (req, res) => {
+router.post("/sessions/new", verifyToken, async (req, res) => {
     const { kycId, wallet, studentId } = req.body;
 
     if (!kycId || !wallet) {
@@ -244,7 +136,7 @@ router.post("/sessions/new", async (req, res) => {
 });
 
 // Ping giữ phiên
-router.post("/sessions/ping", async (req, res) => {
+router.post("/sessions/ping", verifyToken, async (req, res) => {
     const { kycId } = req.body;
     if (!kycId) return res.status(400).json({ error: "Thiếu kycId" });
 
@@ -252,7 +144,7 @@ router.post("/sessions/ping", async (req, res) => {
     res.json({ success: true });
 });
 
-router.post("/expire/:id", async (req, res) => {
+router.post("/expire/:id", verifyToken, async (req, res) => {
     try {
         const kyc = await Kyc.findOneAndUpdate(
             { _id: req.params.id, status: "processing" },
@@ -272,7 +164,7 @@ router.post("/expire/:id", async (req, res) => {
 });
 
 // export const confirmKycSession = async (req, res) => {
-router.post("/confirm", async (req, res) => {
+router.post("/confirm", verifyToken, async (req, res) => {
     const { studentId, wallet, kycSessionId, emoji, clickedConfirmedAt } = req.body;
 
     try {
@@ -283,7 +175,8 @@ router.post("/confirm", async (req, res) => {
             return res.status(404).json({ error: "KYC session không tồn tại" });
         }
 
-        const clickedTime = new Date(clickedConfirmedAt);
+        // const clickedTime = new Date(clickedConfirmedAt);
+        const clickedTime = new Date();
         const startedTime = new Date(kyc.startedAt); // 🔑 Lấy từ bảng KYC
 
         const secondsSinceStart = (clickedTime - startedTime) / 1000;
@@ -349,7 +242,7 @@ router.post("/confirm", async (req, res) => {
 //         return res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
 //     }
 // });
-router.post("/upload/:id", upload.array("images", 4), async (req, res) => {
+router.post("/upload/:id", verifyToken, upload.array("images", 4), async (req, res) => {
     try {
         const kycId = req.params.id;
         const bankInfo = req.body.bankInfo;
@@ -391,7 +284,7 @@ router.post("/upload/:id", upload.array("images", 4), async (req, res) => {
     }
 });
 
-router.get("/session-status/:kycId", async (req, res) => {
+router.get("/session-status/:kycId", verifyToken, async (req, res) => {
     const { kycId } = req.params;
     try {
         const session = await Session.findOne({ kycId });
@@ -408,20 +301,50 @@ router.get("/session-status/:kycId", async (req, res) => {
 });
 
 // Backend: routes/kycRoutes.js
-router.get("/sessions", async (req, res) => {
-    // const kyc = await Kyc.find().sort({ startedAt: -1 });
-    // if(kyc.status !== 'checking') {
+// router.get("/sessions", async (req, res) => {
+//     // const kyc = await Kyc.find().sort({ startedAt: -1 });
+//     // if(kyc.status !== 'checking') {
 
-    //   return res.status(404).json({ error: 'Không có phiên KYC nào' });
-    // }
-    // const sessions = await Session.find().sort({ startedAt: -1 });
-    // res.json(sessions);
-    const latestKyc = await Kyc.findOne({ status: "checking" }).sort({ startedAt: -1 });
-    if (!latestKyc) {
-        return res.status(404).json({ error: "Không có phiên KYC nào đang checking" });
+//     //   return res.status(404).json({ error: 'Không có phiên KYC nào' });
+//     // }
+//     // const sessions = await Session.find().sort({ startedAt: -1 });
+//     // res.json(sessions);
+//     const latestKyc = await Kyc.findOne({ status: "checking" }).sort({ startedAt: -1 });
+//     if (!latestKyc) {
+//         return res.status(404).json({ error: "Không có phiên KYC nào đang checking" });
+//     }
+//     const sessions = await Session.find({ kycId: latestKyc._id }).sort({ startedAt: -1 });
+//     res.json(sessions);
+// });
+
+router.get("/history/:studentId/kycs", verifyToken, async (req, res) => {
+    const { studentId } = req.params;
+  
+    if (!studentId) {
+      return res.status(400).json({ error: "Thiếu studentId" });
     }
-    const sessions = await Session.find({ kycId: latestKyc._id }).sort({ startedAt: -1 });
-    res.json(sessions);
-});
+  
+    try {
+      const kycs = await Session.find({ studentId }).sort({ startedAt: -1 }); // LẤY DANH SÁCH
+  
+      if (!kycs || kycs.length === 0) {
+        return res.status(404).json({ error: "Không tìm thấy KYC nào" });
+      }
+  
+      // Trả về danh sách các KYC đơn giản
+      res.json(kycs.map(item => ({
+        wallet: item.wallet,
+        // kycId: item.kycId,
+        status: item.status,
+        startedAt: item.imageUploadedAt,
+        bankInfo: item.bankInfo || '',
+      })));
+    } catch (err) {
+      console.error('[HISTORY ERROR]', err);
+      return res.status(500).json({ error: "Lỗi server" });
+    }
+  });
+  
+  
 
 export default router;

@@ -48,13 +48,13 @@ import AdminPage from "./pages/AdminPage";
 import WalletStatus from "./components/WalletStatus";
 import { Toaster } from "sonner";
 import ToastDisplay from "@/components/ToastDisplay";
-import KycReceivePage from "./pages/KycReceivePage";
-import KycAvailablePage from "./pages/KycAvailablePage";
-import KycCountdownOverlay from "./pages/KycCountdownOverlay";
+// import KycReceivePage from "./pages/KycReceivePage";
+// import KycAvailablePage from "./pages/KycAvailablePage";
+// import KycCountdownOverlay from "./pages/KycCountdownOverlay";
 
 function App() {
   const location = useLocation();
-  const hideWallet = ["/order", "/admin","/kyc/:kycId", "/kyc-session/:kycId"]; // List of paths where the wallet should be hidden
+  const hideWallet = ["/admin"]; // List of paths where the wallet should be hidden
 
   const shouldHideWallet = hideWallet.includes(location.pathname);
 
@@ -69,9 +69,9 @@ function App() {
         <Route path="/kyc" element={<KycPage />} />
         <Route path="/status" element={<StatusPage />} />
         <Route path="/admin" element={<AdminPage />} />
-        <Route path="/kyc/:kycId" element={<KycReceivePage />} />
-        <Route path="/order" element={<KycAvailablePage />} />
-        <Route path="/kyc-session/:kycId" element={<KycCountdownOverlay studentId="sinhvien123" />} />
+        {/* <Route path="/kyc/:kycId" element={<KycReceivePage />} /> */}
+        {/* <Route path="/order" element={<KycAvailablePage />} /> */}
+        {/* <Route path="/kyc-session/:kycId" element={<KycCountdownOverlay studentId="sinhvien123" />} /> */}
       </Routes>
     </div>
   );

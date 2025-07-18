@@ -54,7 +54,13 @@ export default function KycPage() {
       setCheckingPayment(true);
     
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/check-payment?from=${walletData.wallet}`);
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/check-payment?from=${walletData.wallet}`,
+            {
+                headers: {
+                Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                },
+            }
+        );
         const data = await res.json();
     
         if (data.success) {
@@ -105,7 +111,13 @@ export default function KycPage() {
 
         const checkExistingKyc = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/status/${walletData.wallet}`);
+                const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/status/${walletData.wallet}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                        },
+                    }
+                );
                 const data = await res.json();
 
                 if (["approved", "pending", "rejected"].includes(data.status)) {
@@ -138,6 +150,8 @@ export default function KycPage() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+
                 },
                 body: JSON.stringify(payload),
             });

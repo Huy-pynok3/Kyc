@@ -12,7 +12,13 @@ export default function PaymentCheck({ wallet, onSuccess }) {
       try {
         setError(import.meta.env.VITE_API_BASE_URL);
 
-        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/check-payment?from=${wallet}`);
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/check-payment?from=${wallet}`,
+          {
+            headers: {
+                Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+            },
+        }
+        );
         const data = await res.json();
 
         if (data.success) {

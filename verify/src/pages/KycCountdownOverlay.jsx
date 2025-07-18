@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-export default function KycCountdownOverlay({ studentId = 'unknown' }) {
+export default function KycCountdownOverlay() {
+  // Lấy studentId từ localStorage hoặc mặc định là "unknown"
+  const studentId = localStorage.getItem("studentId") || "unknown";
   const { kycId } = useParams();
   const [timeLeft, setTimeLeft] = useState(300);
   const [confirmed, setConfirmed] = useState(false);
+
   const [kycSessionId, setKycSessionId] = useState('');
   const [kycData, setKycData] = useState(null);
   // const emojis = ['🚀', '🦊', '🎯', '🔥', '🌟', '🍀'];
@@ -15,6 +18,9 @@ export default function KycCountdownOverlay({ studentId = 'unknown' }) {
   const [emoji, setEmoji] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
 
+  if( studentId === "unknown") {
+    navigate("/");
+  }
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(new Date());
@@ -26,7 +32,11 @@ export default function KycCountdownOverlay({ studentId = 'unknown' }) {
   // Load KYC info
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/info/${kycId}`)
+      .get(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/info/${kycId}`,{
+        headers: {
+          Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+        },
+      })
       .then(res => {
         setKycData(res.data);
       })
@@ -43,6 +53,10 @@ export default function KycCountdownOverlay({ studentId = 'unknown' }) {
           kycId: kycData._id,
           wallet: kycData.wallet,
           studentId,
+        },{
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+          },
         });
   
         const session = res.data.session;
@@ -66,6 +80,15 @@ export default function KycCountdownOverlay({ studentId = 'unknown' }) {
     const interval = setInterval(() => {
       axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/sessions/ping`, {
         kycId: kycData._id,
+        
+      },{
+        headers: {
+          Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+        },
+      }).then(res => {
+        console.log("Ping thành công:", res.data);
+      }).catch(err => {
+        console.error("Lỗi khi ping session:", err);
       });
     }, 20000);
 
@@ -91,6 +114,15 @@ export default function KycCountdownOverlay({ studentId = 'unknown' }) {
         // ✅ Hết thời gian: cập nhật status về pending và chuyển hướng
         axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/expire/${kycId}`, {
           kycId: kycData._id,
+        },{
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+          },
+        }).then(() => {
+          alert('⏳ Phiên KYC đã hết thời gian. Vui lòng thử lại sau.');
+        }).catch(err => {
+          console.error("Lỗi khi cập nhật trạng thái KYC:", err);
+          alert('❌ Có lỗi xảy ra khi cập nhật trạng thái KYC.');
         });
         navigate("/order");
       }
@@ -114,6 +146,11 @@ export default function KycCountdownOverlay({ studentId = 'unknown' }) {
             kycSessionId,
             emoji,
             clickedConfirmedAt: new Date().toISOString(),
+          },{
+            
+              headers: {
+                  Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+              },
           }
         );
     

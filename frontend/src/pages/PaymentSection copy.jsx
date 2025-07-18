@@ -14,13 +14,13 @@ export default function PaymentSection({
 
     const [timeLeft, setTimeLeft] = useState(600); // 10 phút crypto, 5 phút bank
     const [expired, setExpired] = useState(false);
-    const amount = 2000;
+    const amount = 100000;
     qrUrl = `https://qr.sepay.vn/img?bank=VietinBank&acc=101877183706&amount=${amount}&des=SEVQR+TKPTPT${encodeURIComponent(
         wallet
     )}&size=200x200`;
     // Reset timer khi đổi phương thức
     useEffect(() => {
-        setTimeLeft(method === "crypto" ? 600 : 10); // 10p hoặc 5p
+        setTimeLeft(method === "crypto" ? 600 : 240); // 10p hoặc 5p
         setExpired(false);
     }, [method]);
 

@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 dotenv.config();
 import Payment from "../models/payments.js";
 import { sendTelegramAlert } from "../services/telegramBot.js";
+import  verifyToken  from '../middlewares/authToken.js';
+import auth from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -26,7 +28,7 @@ const ERC20_ABI = ["event Transfer(address indexed from, address indexed to, uin
 const usdt = new ethers.Contract(process.env.USDT_CONTRACT, ERC20_ABI, provider);
 
 // Route kiểm tra thanh toán
-router.get("/check-payment", async (req, res) => {
+router.get("/check-payment", verifyToken, async (req, res) => {
     const from = req.query.from?.toLowerCase();
     if (!from || !ethers.isAddress(from)) {
         return res.status(400).json({ success: false, error: "Địa chỉ không hợp lệ" });
@@ -151,7 +153,7 @@ router.get("/check-payment", async (req, res) => {
 });
 
 // Route để duyệt tay thanh toán
-router.post("/manual-approve", async (req, res) => {
+router.post("/manual-approve",auth, async (req, res) => {
     const { wallet } = req.body;
     if (!wallet || !isAddress(wallet)) {
         return res.status(400).json({ success: false, message: "Địa chỉ không hợp lệ" });
@@ -189,41 +191,10 @@ router.post("/manual-approve", async (req, res) => {
     }
 });
 
-//
-// router.post("/webhook", async (req, res) => {
-//     const { transId, description, amount, bankCode } = req.body;
-
-//     if (!description || !amount) {
-//       return res.status(400).json({ success: false, error: "Thiếu thông tin từ SePay" });
-//     }
-
-//     try {
-//       // Dùng description làm ví (đã gắn từ frontend)
-//       const wallet = description.toLowerCase();
-
-//       const existing = await Payment.findOne({ from: wallet });
-//       if (existing) {
-//         return res.json({ success: true, message: "Đã xử lý trước đó" });
-//       }
-
-//       await Payment.create({
-//         from: wallet,
-//         txHash: `sepay-${transId}`,
-//         amount,
-//         confirmedAt: new Date(),
-//         status: "approved",
-//       });
-
-//       res.json({ success: true });
-//     } catch (err) {
-//       console.error("Webhook SePay lỗi:", err);
-//       res.status(500).json({ success: false });
-//     }
-//   });
 
 router.post("/webhook", async (req, res) => {
-    console.log("📩 Headers:", req.headers);
-    console.log("📩 Body:", req.body);
+    // console.log("📩 Headers:", req.headers);
+    // console.log("📩 Body:", req.body);
 
 
     const authHeader = req.headers["authorization"];
@@ -295,7 +266,7 @@ router.post("/webhook", async (req, res) => {
 });
 
 // Route lấy tất cả giao dịch thanh toán
-router.get("/latest-kyc", async (req, res) => {
+router.get("/latest-kyc", verifyToken, async (req, res) => {
     try {
         const latest = await Payment.findOne({ status: "pending" }).sort({ confirmedAt: -1 }).limit(1);
         const wallet = latest?.from || null;

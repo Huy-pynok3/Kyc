@@ -9,7 +9,14 @@ export default function KycReceivePage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/info/${kycId}`).then((res) => {
+        axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/info/${kycId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                },
+            }
+            
+        ).then((res) => {
             setKycInfo(res.data);
         });
     }, [kycId]);
@@ -20,6 +27,10 @@ export default function KycReceivePage() {
         try {
             const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/start/${kycId}`, {
                 startedAt,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                },
             });
 
             if (res.data.success) {

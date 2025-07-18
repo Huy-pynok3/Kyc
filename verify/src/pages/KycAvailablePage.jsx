@@ -8,7 +8,15 @@ export default function KycAvailablePage() {
     const amount = 40000;
     useEffect(() => {
         console.log('useEffect chạy');
-        axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/available`).then((res) => setKycList(res.data));
+        axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/available`,
+            {
+                headers: {
+                    Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                },
+            }
+
+
+        ).then((res) => setKycList(res.data));
     }, []);
 
     const handleClick = async (id) => {

@@ -61,7 +61,13 @@ export default function UploadPage() {
     try {
       setUploading(true);
       // Gửi dữ liệu lên server
-      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/upload/${kycId}`, formData);
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/upload/${kycId}`, formData, 
+            {
+                headers: {
+                    Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                },
+            }
+       );
 
       // await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/upload/${kycId}`, formData, {
       //   headers: { 'Content-Type': 'multipart/form-data' },

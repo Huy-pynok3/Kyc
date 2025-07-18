@@ -16,7 +16,13 @@ export default function StatusPage() {
         const fetchStatus = async () => {
             try {
                 const url = `${import.meta.env.VITE_API_BASE_URL}/api/kyc/status/${wallet}`
-                const res = await fetch(url);
+                const res = await fetch(url,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                        },
+                    }
+                );
                 const data = await res.json();
 
                 // if (!(data.status === 'approved' || data.forceApproved)) {

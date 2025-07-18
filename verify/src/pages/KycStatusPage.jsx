@@ -51,7 +51,11 @@ export default function KycStatusPage() {
   useEffect(() => {
     const fetchStatus = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/session-status/${kycId}`);
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/session-status/${kycId}`, {
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+          },
+        });
         setStatusData(res.data);
       } catch (err) {
         console.error("Lỗi lấy trạng thái phiên:", err);

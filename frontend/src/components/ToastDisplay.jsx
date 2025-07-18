@@ -51,7 +51,7 @@ export default function ToastDisplay({ mode = "real" }) {
         //   });
           
       }
-    }, 10000);
+    }, 30000);
 
     return () => clearInterval(interval);
   }, [mode]);
