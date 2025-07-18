@@ -2,6 +2,7 @@
   "hash": "52e5a798",
   "configHash": "6a62cf08",
   "lockfileHash": "71e922e9",
+<<<<<<< HEAD
   "browserHash": "91812d29",
   "optimized": {
     "react": {
@@ -40,4 +41,9 @@
       "file": "chunk-G3PMV62Z.js"
     }
   }
+=======
+  "browserHash": "c7d02640",
+  "optimized": {},
+  "chunks": {}
+>>>>>>> 2a0719e (verify)
 }
