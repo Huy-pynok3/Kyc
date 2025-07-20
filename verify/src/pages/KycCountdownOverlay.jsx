@@ -85,11 +85,7 @@ export default function KycCountdownOverlay() {
         headers: {
           Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
         },
-      }).then(res => {
-        console.log("Ping thành công:", res.data);
-      }).catch(err => {
-        console.error("Lỗi khi ping session:", err);
-      });
+      })
     }, 20000);
 
     return () => clearInterval(interval);

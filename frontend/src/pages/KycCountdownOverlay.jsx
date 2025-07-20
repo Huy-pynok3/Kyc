@@ -57,6 +57,10 @@ export default function KycCountdownOverlay({ studentId = 'unknown' }) {
     const interval = setInterval(() => {
       axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/sessions/ping`, {
         kycId: kycData._id,
+      },{
+        headers: {
+          Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+        },
       });
     }, 10000);
 

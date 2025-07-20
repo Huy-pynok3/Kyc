@@ -9,18 +9,6 @@ export default function UploadPage() {
   const [uploading, setUploading] = useState(false);
   const navigate = useNavigate();
 
-  // Ping giữ session 
-//   useEffect(() => {
-//     if (!kycData?._id) return;
-
-//     const interval = setInterval(() => {
-//       axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/sessions/ping`, {
-//         kycId: kycData._id,
-//       });
-//     }, 20000);
-
-//     return () => clearInterval(interval);
-//   }, [kycData]);
 
     useEffect(() => {
     if (!kycId) return;
@@ -28,6 +16,9 @@ export default function UploadPage() {
     const interval = setInterval(() => {
         axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/sessions/ping`, {
         kycId,
+        },{
+            headers: {
+                Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,}
         });
     }, 20000); // Ping mỗi 20 giây
 

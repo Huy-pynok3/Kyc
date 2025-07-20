@@ -39,7 +39,7 @@
 //     </div>
 //   );
 // }
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -47,6 +47,7 @@ export default function KycStatusPage() {
   const { kycId } = useParams();
   const [statusData, setStatusData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -130,6 +131,14 @@ export default function KycStatusPage() {
           Nếu có thắc mắc, hãy liên hệ admin để được hỗ trợ sớm nhất.
         </div> */}
       </div>
+      <div className="mt-6 text-center">
+                <button
+                onClick={() => navigate("/")}
+                className="text-blue-600 hover:underline"
+                >
+                ← Quay về trang chính
+                </button>
+            </div>
     </div>
   );
 }

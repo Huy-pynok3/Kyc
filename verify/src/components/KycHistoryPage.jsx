@@ -13,7 +13,13 @@ export default function KycHistoryPage() {
         if (!studentId) return;
 
         axios
-            .get(`${API_BASE_URL}/api/kyc/history/${studentId}/kycs`)
+            .get(`${API_BASE_URL}/api/kyc/history/${studentId}/kycs`,
+                {
+                  headers: {
+                      Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                  },
+              }
+            )
             .then((res) => {
                 setHistory(res.data);
                 setLoading(false);

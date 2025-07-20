@@ -334,7 +334,7 @@ router.get("/history/:studentId/kycs", verifyToken, async (req, res) => {
       // Trả về danh sách các KYC đơn giản
       res.json(kycs.map(item => ({
         wallet: item.wallet,
-        // kycId: item.kycId,
+        kycId: item.kycId,
         status: item.status,
         startedAt: item.imageUploadedAt,
         bankInfo: item.bankInfo || '',
