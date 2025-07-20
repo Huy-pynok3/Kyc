@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-dotenv.config()
+import dotenv from "dotenv";
+dotenv.config();
 
 import mongoose from "mongoose";
 import express from "express";
@@ -9,23 +9,16 @@ import paymentRoutes from "./routers/payment.js";
 import kycPublicRoutes from "./routers/kycPublic.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { startResetExpiredSessionsJob } from './jobs/resetExpiredSessions.js';
+import { startResetExpiredSessionsJob } from "./jobs/resetExpiredSessions.js";
 
 dotenv.config();
 const app = express();
 
-// const corsOptions = {
-//   origin: ["http://localhost:5173"],
-//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-//   allowedHeaders: ["Content-Type", "Authorization"],
-//   credentials: true,
-// };
 app.use(cors());
-// app.options("*", cors(corsOptions));
 app.use(express.json());
 
 // Hash mật khẩu admin (thay bằng hash bạn sinh ra)
-const ADMIN_PASSWORD_HASH = process.env.ADMIN_TOKEN
+const ADMIN_PASSWORD_HASH = process.env.ADMIN_TOKEN;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // Endpoint đăng nhập admin
@@ -66,25 +59,30 @@ app.use("/api/kyc", kycRoutes);
 
 app.use("/api/kyc", kycPublicRoutes);
 app.use("/api", paymentRoutes);
-app.use('/uploads', express.static('uploads'));
+
+if (process.env.USE_CLOUDINARY !== "true") {
+    app.use("/uploads", express.static("uploads"));
+}
+console.log('Upload đang dùng:', process.env.USE_CLOUDINARY === 'true' ? 'Cloudinary' : 'Local');
 
 app.use((err, req, res, next) => {
     console.error("Lỗi server:", err);
     res.status(500).json({ error: "Lỗi server nội bộ" });
-  });
+});
 const PORT = process.env.PORT || 5001;
 
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log("MongoDB connected");
+mongoose
+    .connect(process.env.MONGODB_URI)
+    .then(() => {
+        console.log("MongoDB connected");
 
-    // Start cronjob khi đã kết nối DB
-    startResetExpiredSessionsJob();
+        // Start cronjob khi đã kết nối DB
+        startResetExpiredSessionsJob();
 
-    app.listen(PORT, () => {
-      console.log(`Server ready at http://localhost:${PORT}`);
+        app.listen(PORT, () => {
+            console.log(`Server ready at http://localhost:${PORT}`);
+        });
+    })
+    .catch((err) => {
+        console.error("MongoDB connection error:", err);
     });
-  })
-  .catch((err) => {
-    console.error("MongoDB connection error:", err);
-  });

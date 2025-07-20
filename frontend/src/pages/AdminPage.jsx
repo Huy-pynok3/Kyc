@@ -95,7 +95,7 @@ export default function AdminPage() {
         handleConfirmRejection,
     } = useKyc(token);
     const { sessions } = useSessions();
-    const [activeTab, setActiveTab] = useState("kyc"); // Quản lý tab hiện tại
+    const [activeTab, setActiveTab] = useState("sessions"); // Quản lý tab hiện tại
 
     if (!token) {
         return <AdminLogin password={password} setPassword={setPassword} handleLogin={handleLogin} />;

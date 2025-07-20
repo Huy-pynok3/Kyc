@@ -1,27 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ClipLoader } from "react-spinners";
 
 export default function KycAvailablePage() {
     const [kycList, setKycList] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     const amount = 40000;
     useEffect(() => {
-        console.log('useEffect chạy');
-        axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/available`,
-            {
+        console.log("useEffect chạy");
+        setIsLoading(true);
+        axios
+            .get(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/available`, {
                 headers: {
                     Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
                 },
-            }
-
-
-        ).then((res) => setKycList(res.data));
+            })
+            .then((res) => {
+                setKycList(res.data);
+                setIsLoading(false);
+            });
     }, []);
 
     const handleClick = async (id) => {
         try {
-            navigate(`/kyc/${id}`); 
+            navigate(`/kyc/${id}`);
         } catch {
             alert("Lỗi khi nhận đơn.");
         }
@@ -29,10 +33,14 @@ export default function KycAvailablePage() {
 
     return (
         <div className="p-4 max-w-md mx-auto text-center">
-   
             <h1 className="text-2xl font-bold text-blue-700 mb-6">📋 Đơn KYC chờ xử lý</h1>
 
-            {kycList.length === 0 ? (
+            {isLoading ? (
+                // <p className="text-gray-500">Đang tải đơn...</p>
+                <div className="flex justify-center">
+                    <ClipLoader color="#2563eb" size={40} />
+                </div>
+            ) : kycList.length === 0 ? (
                 <p className="text-gray-500">Hiện không có đơn nào.</p>
             ) : (
                 <ul className="space-y-4">

@@ -12,14 +12,25 @@ export default function AdminSessionCard({ session }) {
             alert("Vui lòng nhập lý do từ chối.");
             return;
         }
-
+        const token = localStorage.getItem("adminToken");
+        if (!token) {
+            alert("Bạn chưa đăng nhập quản trị viên.");
+            return;
+        }
+        // console.log("Token:", token); 
+        // console.log("Data gửi:", { kycId: session.kycId, status, adminNote: status === "rejected" ? note : "" });
         try {
             setLoading(true);
             await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/session-status/update`, {
                 kycId: session.kycId,
                 status,
                 adminNote: status === "rejected" ? note : "",
-            });
+            },{
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            
             alert("Cập nhật thành công!");
         } catch (err) {
             console.error(err);
@@ -59,9 +70,8 @@ export default function AdminSessionCard({ session }) {
                 </p>
                 <p><strong>Ảnh đã gửi: </strong></p>
     
+                <UploadedImagesViewer uploadedImages={session.uploadedImages} />
             </div>
-
-            <UploadedImagesViewer uploadedImages={session.uploadedImages} />
 
 
 

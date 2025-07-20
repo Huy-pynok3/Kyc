@@ -1,4 +1,3 @@
-
 import { Kyc, Payment, Session } from "../models/index.js";
 
 export const submitKyc = async (req, res) => {
@@ -104,39 +103,36 @@ export const deleteKyc = async (req, res) => {
     const walletLower = wallet.toLowerCase();
 
     try {
-
         await Kyc.deleteOne({ wallet: walletLower });
 
         await Payment.deleteMany({ from: walletLower });
 
         res.json({ message: `Đã xóa hoàn toàn KYC cho ví ${wallet}` });
-
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Lỗi khi xóa KYC." });
     }
-    
 };
 
 // API public lấy KYC theo ví
 export const getKycStatusByWallet = async (req, res) => {
     const wallet = req.params.wallet?.toLowerCase();
     if (!wallet) return res.status(400).json({ error: "Thiếu địa chỉ ví" });
-  
+
     try {
-      const entry = await Kyc.findOne({ wallet });
-      if (!entry) return res.status(404).json({ status: "not_found" });
-  
-      res.json({
-        status: entry.status || "pending",
-        email: entry.email || null,
-        mapleLink: entry.mapleLink || null,
-        submittedAt: entry.submittedAt || null,
-      });
+        const entry = await Kyc.findOne({ wallet });
+        if (!entry) return res.status(404).json({ status: "not_found" });
+
+        res.json({
+            status: entry.status || "pending",
+            email: entry.email || null,
+            mapleLink: entry.mapleLink || null,
+            submittedAt: entry.submittedAt || null,
+        });
     } catch (err) {
-      res.status(500).json({ error: "Lỗi khi truy vấn KYC." });
+        res.status(500).json({ error: "Lỗi khi truy vấn KYC." });
     }
-  };
+};
 
 //   router.get("/sessions", auth, async (req, res) => {
 
@@ -148,11 +144,11 @@ export const getKycStatusByWallet = async (req, res) => {
 //     res.json(sessions);
 // });
 
-export const getKycSessions = async (req, res) => { 
+export const getKycSessions = async (req, res) => {
     try {
+        // console.log("Đang xử lý getKycSessions, user:", req.user);
         const latestKyc = await Kyc.findOne({ status: "checking" }).sort({ startedAt: -1 });
         // console.log("Kyc checking mới nhất:", latestKyc);
-
         if (!latestKyc) {
             return res.status(404).json({ error: "Không có phiên KYC nào đang checking" });
         }
@@ -162,4 +158,47 @@ export const getKycSessions = async (req, res) => {
         console.error("Lỗi khi lấy phiên KYC:", err);
         res.status(500).json({ error: "Lỗi server." });
     }
-}
+};
+
+export const updateSessionStatus = async (req, res) => {
+    const { kycId, status, adminNote } = req.body;
+
+    // Xác thực đầu vào
+    if (!kycId || !["checking", "paid", "rejected"].includes(status)) {
+        return res.status(400).json({ error: "Thiếu hoặc trạng thái không hợp lệ" });
+    }
+
+    try {
+        const session = await Session.findOne({ kycId });
+        const kyc = await Kyc.findOne({ _id: kycId });
+
+        if (!kyc) {
+            return res.status(404).json({ error: "Không tìm thấy KYC" });
+        }
+        if (!session) {
+            return res.status(404).json({ error: "Không tìm thấy phiên session" });
+        }
+
+        session.status = status;
+
+        if (status === "paid") {
+            session.paidAt = new Date();
+            session.adminNote = ""; 
+            kyc.status = "approved";
+        }
+
+        if (status === "rejected") {
+            session.adminNote = adminNote || "";
+            session.paidAt = undefined; 
+            kyc.status = "pending"; 
+        }
+
+        await session.save();
+        await kyc.save();
+
+        res.json({ message: "Cập nhật thành công", session });
+    } catch (err) {
+        console.error("[Admin Update Session]", err);
+        res.status(500).json({ error: "Lỗi server" });
+    }
+};

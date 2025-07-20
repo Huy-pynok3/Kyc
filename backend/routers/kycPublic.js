@@ -255,14 +255,14 @@ router.post("/upload/:id", verifyToken, upload.array("images", 4), async (req, r
             return res.status(400).json({ error: "Thiếu dữ liệu" });
         }
 
-        const imagePaths = files.map((file) => file.path);
+        const imageUrls = files.map((file) => file.path);
 
         // await Session.findByIdAndUpdate(kycId, {
         const updated = await Session.findOneAndUpdate(
             { kycId },
             {
                 bankInfo,
-                uploadedImages: imagePaths,
+                uploadedImages: imageUrls,
                 imageUploadedAt: new Date(),
             },
             { new: true }
@@ -338,6 +338,7 @@ router.get("/history/:studentId/kycs", verifyToken, async (req, res) => {
         status: item.status,
         startedAt: item.imageUploadedAt,
         bankInfo: item.bankInfo || '',
+        adminNote: item.adminNote || '',
       })));
     } catch (err) {
       console.error('[HISTORY ERROR]', err);

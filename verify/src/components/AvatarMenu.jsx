@@ -38,7 +38,7 @@ export default function AvatarMenu() {
         onClick={() => setOpen(!open)}
         className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold hover:opacity-80"
       >
-        {studentId.slice(0, 2).toUpperCase()}
+        {studentId.slice(-2).toUpperCase()}
       </button>
 
       {open && (

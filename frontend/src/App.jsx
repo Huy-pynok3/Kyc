@@ -54,7 +54,7 @@ import ToastDisplay from "@/components/ToastDisplay";
 
 function App() {
   const location = useLocation();
-  const hideWallet = ["/admin"]; // List of paths where the wallet should be hidden
+  const hideWallet = ["/panel"]; // List of paths where the wallet should be hidden
 
   const shouldHideWallet = hideWallet.includes(location.pathname);
 
@@ -68,7 +68,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/kyc" element={<KycPage />} />
         <Route path="/status" element={<StatusPage />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/panel" element={<AdminPage />} />
         {/* <Route path="/kyc/:kycId" element={<KycReceivePage />} /> */}
         {/* <Route path="/order" element={<KycAvailablePage />} /> */}
         {/* <Route path="/kyc-session/:kycId" element={<KycCountdownOverlay studentId="sinhvien123" />} /> */}

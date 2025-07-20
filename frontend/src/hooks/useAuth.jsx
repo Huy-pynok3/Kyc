@@ -20,6 +20,7 @@ export const useAuth = () => {
   const handleLogout = () => {
     clearToken();
     setAuthToken("");
+    window.location.reload(); // hoặc navigate(0)
   };
 
   return { token, password, setPassword, handleLogin, handleLogout };

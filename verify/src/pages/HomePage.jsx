@@ -50,7 +50,7 @@ const HomePage = () => {
           </button>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-6 ">
           {/* Bước 1 */}
           <div className="bg-white bg-opacity-90 p-4 rounded-xl shadow-sm">
             <h2 className="font-semibold mb-2 text-gray-900">🔹 Bước 1: Nhấn "Nhận đơn"</h2>

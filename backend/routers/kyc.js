@@ -7,6 +7,7 @@ import {
     updateKycStatus,
     deleteKyc,
     getKycSessions,
+    updateSessionStatus,
 } from "../controllers/kycController.js";
 // import { getKycInfo, getAvailableKyc } from '../controllers/verifyController.js';
 import  verifyToken  from '../middlewares/authToken.js';
@@ -22,10 +23,11 @@ router.get("/status/:wallet",verifyToken, getKycStatusByWallet);
 
 // Admin routes
 
-// router.get("/sessions", auth, getKycSessions);
-router.get("/sessions", getKycSessions);
+router.get("/sessions", auth, getKycSessions);
+// router.get("/sessions", getKycSessions);
 router.get("/all", auth, getAllKyc);
 router.post("/update-status", auth, updateKycStatus);
+router.post("/session-status/update", auth, updateSessionStatus);
 router.delete("/delete", auth, deleteKyc); 
 
 export default router;

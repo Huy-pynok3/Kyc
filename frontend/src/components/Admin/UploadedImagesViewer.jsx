@@ -2,14 +2,16 @@ import { useState } from "react";
 
 export default function UploadedImagesViewer({ uploadedImages = [] }) {
   const [previewImg, setPreviewImg] = useState(null);
+  console.log("Uploaded images:", uploadedImages);
 
   return (
     <div className="space-y-2">
-
       <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
         {uploadedImages.map((imgPath, index) => {
           const fixedPath = imgPath.replace(/\\/g, '/');
+          console.log("Fixed image path:", fixedPath);
           const fullUrl = `${import.meta.env.VITE_API_BASE_URL}/${fixedPath}`;
+          console.log("Full image URL:", fullUrl);
           return (
             <img
               key={index}

@@ -1,12 +1,14 @@
 
 import { useState, useEffect } from "react";
 import { fetchKycList, updateKycStatus, deleteKyc, manualApprove } from "@/services/api";
+import { useAuth } from "@/hooks/useAuth";
 
 export const useKyc = (token) => {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [manualWallet, setManualWallet] = useState("");
   const [rejectionModal, setRejectionModal] = useState({ show: false, wallet: "", reason: "" });
+  const { handleLogout } = useAuth(); 
 
   const fetchList = async () => {
     setLoading(true);
@@ -14,7 +16,12 @@ export const useKyc = (token) => {
       const data = await fetchKycList(token);
       setList(data);
     } catch (err) {
-      alert(`Không thể tải danh sách KYC: ${err.message}`);
+
+      if (err.message === "Session expired") {
+        handleLogout(); // Gọi logout khi token hết hạn
+      } else {
+        alert(`Không thể tải danh sách KYC: ${err.message}`);
+      }
     } finally {
       setLoading(false);
     }
