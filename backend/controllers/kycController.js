@@ -144,22 +144,36 @@ export const getKycStatusByWallet = async (req, res) => {
 //     res.json(sessions);
 // });
 
+// export const getKycSessions = async (req, res) => {
+//     try {
+//         // console.log("Đang xử lý getKycSessions, user:", req.user);
+//         const latestKyc = await Kyc.findOne({ status: "checking" }).sort({ startedAt: -1 });
+//         // console.log("Kyc checking mới nhất:", latestKyc);
+//         if (!latestKyc) {
+//             return res.status(404).json({ error: "Không có phiên KYC nào đang checking" });
+//         }
+//         const sessions = await Session.find({ kycId: latestKyc._id }).sort({ startedAt: -1 });
+//         res.json(sessions);
+//     } catch (err) {
+//         console.error("Lỗi khi lấy phiên KYC:", err);
+//         res.status(500).json({ error: "Lỗi server." });
+//     }
+// };
 export const getKycSessions = async (req, res) => {
     try {
-        // console.log("Đang xử lý getKycSessions, user:", req.user);
-        const latestKyc = await Kyc.findOne({ status: "checking" }).sort({ startedAt: -1 });
-        // console.log("Kyc checking mới nhất:", latestKyc);
-        if (!latestKyc) {
-            return res.status(404).json({ error: "Không có phiên KYC nào đang checking" });
-        }
-        const sessions = await Session.find({ kycId: latestKyc._id }).sort({ startedAt: -1 });
-        res.json(sessions);
+      const checkingKycs = await Kyc.find({ status: "checking" });
+      const  kycIds = checkingKycs.map(kyc => kyc._id);
+      if (!kycIds || kycIds.length === 0) {
+        return res.status(404).json({ error: "Không có phiên KYC nào đang checking" });
+      }
+     const sessions = await Session.find({ kycId: { $in: kycIds } }).sort({ startedAt: -1 });
+      res.json(sessions);
     } catch (err) {
-        console.error("Lỗi khi lấy phiên KYC:", err);
-        res.status(500).json({ error: "Lỗi server." });
+      console.error("[ADMIN PENDING ERROR]", err);
+      return res.status(500).json({ error: "Lỗi server" });
     }
-};
-
+  };
+  
 export const updateSessionStatus = async (req, res) => {
     const { kycId, status, adminNote } = req.body;
 

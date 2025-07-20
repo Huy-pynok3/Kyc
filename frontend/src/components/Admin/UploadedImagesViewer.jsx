@@ -7,11 +7,20 @@ export default function UploadedImagesViewer({ uploadedImages = [] }) {
   return (
     <div className="space-y-2">
       <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-        {uploadedImages.map((imgPath, index) => {
+
+      {uploadedImages.map((imgUrl, index) => (
+        <img
+          key={index}
+          src={imgUrl} 
+          onClick={() => setPreviewImg(imgUrl)}
+          alt={`Ảnh ${index + 1}`}
+          className="cursor-pointer rounded object-cover h-24 w-full border hover:scale-105 transition"
+        />
+      ))}
+
+        {/* {uploadedImages.map((imgPath, index) => {
           const fixedPath = imgPath.replace(/\\/g, '/');
-          console.log("Fixed image path:", fixedPath);
           const fullUrl = `${import.meta.env.VITE_API_BASE_URL}/${fixedPath}`;
-          console.log("Full image URL:", fullUrl);
           return (
             <img
               key={index}
@@ -21,7 +30,7 @@ export default function UploadedImagesViewer({ uploadedImages = [] }) {
               className="cursor-pointer rounded object-cover h-24 w-full border hover:scale-105 transition"
             />
           );
-        })}
+        })} */}
       </div>
 
       {/* Modal xem ảnh */}

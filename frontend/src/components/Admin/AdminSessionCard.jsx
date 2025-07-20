@@ -50,6 +50,9 @@ export default function AdminSessionCard({ session }) {
                     <strong>Ví:</strong> <span className="break-all text-blue-700">{session.wallet}</span>
                 </p>
                 <p>
+                    <strong>User:</strong> {session.studentId} 
+                </p>
+                <p>
                     <strong>Mã:</strong> {session.kycSessionId}
                 </p>
                 <p>

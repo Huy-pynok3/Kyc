@@ -6,6 +6,7 @@ export default function UploadPage() {
   const { kycId } = useParams();
   const [images, setImages] = useState([]);
   const [bankInfo, setBankInfo] = useState('');
+  const [studentId, setStudentId] = useState(localStorage.getItem('studentId') || 'unknown');
   const [uploading, setUploading] = useState(false);
   const navigate = useNavigate();
 
@@ -44,6 +45,7 @@ export default function UploadPage() {
 
     const formData = new FormData();
     formData.append('kycId', kycId);
+    formData.append('studentId', studentId)
     formData.append('bankInfo', bankInfo);
     images.forEach((img, index) => {
       formData.append(`images`, img);

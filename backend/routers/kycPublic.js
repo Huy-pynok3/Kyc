@@ -248,8 +248,8 @@ router.post("/upload/:id", verifyToken, upload.array("images", 4), async (req, r
         const bankInfo = req.body.bankInfo;
         const files = req.files;
 
-        console.log("[UPLOAD] BODY:", req.body);
-        console.log("[UPLOAD] FILES:", files);
+        // console.log("[UPLOAD] BODY:", req.body);
+        // console.log("[UPLOAD] FILES:", files);
 
         if (!kycId || !bankInfo || !files || files.length === 0) {
             return res.status(400).json({ error: "Thiếu dữ liệu" });

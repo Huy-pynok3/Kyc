@@ -103,7 +103,7 @@ export default function KycCountdownOverlay() {
     const updateCountdown = () => {
       const now = Date.now();
       const diff = Math.floor((now - startTime) / 1000);
-      const remaining = Math.max(0, 120 - diff);
+      const remaining = Math.max(0, 360 - diff);
       setTimeLeft(remaining);
 
       if (remaining === 0) {

@@ -28,7 +28,7 @@ const ERC20_ABI = ["event Transfer(address indexed from, address indexed to, uin
 const usdt = new ethers.Contract(process.env.USDT_CONTRACT, ERC20_ABI, provider);
 
 // Route kiểm tra thanh toán
-router.get("/check-payment", verifyToken, async (req, res) => {
+router.get("/check-payment", async (req, res) => {
     const from = req.query.from?.toLowerCase();
     if (!from || !ethers.isAddress(from)) {
         return res.status(400).json({ success: false, error: "Địa chỉ không hợp lệ" });
