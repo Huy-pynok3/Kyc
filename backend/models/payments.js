@@ -17,7 +17,7 @@ const Payment = mongoose.model(
         method : {
             type: String,
             enum: ["crypto", "bank"],
-            required: true
+            // required: true
         },
         // method: "crypto" | "bank",
         //   forceApproved: { type: Boolean, default: false }

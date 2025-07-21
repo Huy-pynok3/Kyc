@@ -1,44 +1,4 @@
-// import { useParams } from 'react-router-dom';
 
-// export default function KycStatusPage() {
-//   const { kycId } = useParams();
-
-//   return (
-//     <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4 py-8">
-//       <div className="w-full max-w-sm bg-gray-100 rounded-2xl shadow-md p-6 text-center">
-//         <div className="text-4xl mb-4 animate-bounce">📤</div>
-//         <h1 className="text-xl font-bold text-gray-800 mb-2">
-//           Gửi thông tin thành công!
-//         </h1>
-//         <p className="text-gray-600 text-sm mb-4">
-//           Admin sẽ kiểm tra ảnh và thông tin của bạn trong thời gian sớm nhất.
-//         </p>
-//         <div className="bg-white rounded-lg p-3 border text-left text-sm text-gray-700">
-//           <div><strong>Mã phiên KYC:</strong></div>
-//           <div className="break-all text-green-700 font-mono">{kycId}</div>
-//         </div>
-
-//         <div className="mt-6">
-//           {/* <p className="text-xs text-gray-400">⏳ Đang chờ kiểm tra & thanh toán</p> */}
-//           {status === 'checking' && (
-//                 <p className="text-yellow-600 text-sm">🕵️ Admin đang kiểm tra ảnh của bạn...</p>
-//                 )}
-//                 {status === 'paid' && (
-//                 <p className="text-green-600 text-sm font-semibold">💸 Bạn đã được thanh toán!</p>
-//                 )}
-//                 {status === 'rejected' && (
-//                 <div className="text-red-600 text-sm">
-//                     ❌ Đơn của bạn bị từ chối
-//                     {adminNote && (
-//                     <p className="text-xs mt-1 text-gray-600 italic">Lý do: {adminNote}</p>
-//                     )}
-//                 </div>
-//                 )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";

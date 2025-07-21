@@ -48,13 +48,14 @@ import AdminPage from "./pages/AdminPage";
 import WalletStatus from "./components/WalletStatus";
 import { Toaster } from "sonner";
 import ToastDisplay from "@/components/ToastDisplay";
+import GuidePage from "./pages/GuidePage";
 // import KycReceivePage from "./pages/KycReceivePage";
 // import KycAvailablePage from "./pages/KycAvailablePage";
 // import KycCountdownOverlay from "./pages/KycCountdownOverlay";
 
 function App() {
   const location = useLocation();
-  const hideWallet = ["/panel"]; // List of paths where the wallet should be hidden
+  const hideWallet = ["/panel", "/guide"]; // List of paths where the wallet should be hidden
 
   const shouldHideWallet = hideWallet.includes(location.pathname);
 
@@ -66,6 +67,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/guide" element={<GuidePage />} />
         <Route path="/kyc" element={<KycPage />} />
         <Route path="/status" element={<StatusPage />} />
         <Route path="/panel" element={<AdminPage />} />

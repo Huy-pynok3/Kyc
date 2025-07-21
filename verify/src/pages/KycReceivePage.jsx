@@ -21,19 +21,42 @@ export default function KycReceivePage() {
         });
     }, [kycId]);
 
-    const handleStartKyc = async () => {
-        console.log("Gửi KYC ID:", kycId);
-        const startedAt = new Date().toISOString();
-        try {
-            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/start/${kycId}`, {
-                startedAt,
-            }, {
-                headers: {
-                    Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
-                },
-            });
+    // const handleStartKyc = async () => {
+    //     console.log("Gửi KYC ID:", kycId);
+    //     const startedAt = new Date().toISOString();
+    //     try {
+    //         const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/start/${kycId}`, {
+    //             startedAt,
+    //         }, {
+    //             headers: {
+    //                 Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+    //             },
+    //         });
 
+    //         if (res.data.success) {
+    //             localStorage.removeItem("kycConfirmed");
+    //             navigate(`/kyc-session/${kycId}`);
+    //         } else {
+    //             alert('Không thể nhận đơn. Có thể đã được người khác nhận.');
+    //         }
+    //     } catch (err) {
+    //         // console.error(err);
+    //         alert("Đã có người nhận đơn KYC này. Vui lòng thử lại sau.");
+    //     }
+    // };
+
+    // time server
+    const handleStartKyc = async () => {
+        try {
+            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/start/${kycId}`, null,
+                {
+                    headers: {
+                        Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                    },
+                }
+            );
             if (res.data.success) {
+                localStorage.removeItem("kycConfirmed");
                 navigate(`/kyc-session/${kycId}`);
             } else {
                 alert('Không thể nhận đơn. Có thể đã được người khác nhận.');
@@ -43,6 +66,7 @@ export default function KycReceivePage() {
             alert("Lỗi khi nhận đơn KYC.");
         }
     };
+    
 
     if (!kycInfo) return <div className="p-4 text-center">Đang tải thông tin KYC...</div>;
 

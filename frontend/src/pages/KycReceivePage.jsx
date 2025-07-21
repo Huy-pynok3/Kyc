@@ -14,14 +14,31 @@ export default function KycReceivePage() {
         });
     }, [kycId]);
 
-    const handleStartKyc = async () => {
-        console.log("Gửi KYC ID:", kycId);
-        const startedAt = new Date().toISOString();
-        try {
-            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/start/${kycId}`, {
-                startedAt,
-            });
 
+    // time client
+    // const handleStartKyc = async () => {
+    //     console.log("Gửi KYC ID:", kycId);
+    //     const startedAt = new Date().toISOString();
+    //     try {
+    //         const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/start/${kycId}`, {
+    //             startedAt,
+    //         });
+
+    //         if (res.data.success) {
+    //             navigate(`/kyc-session/${kycId}`);
+    //         } else {
+    //             alert('Không thể nhận đơn. Có thể đã được người khác nhận.');
+    //         }
+    //     } catch (err) {
+    //         console.error(err);
+    //         alert("Lỗi khi nhận đơn KYC.");
+    //     }
+    // };
+
+    // time server
+    const handleStartKyc = async () => {
+        try {
+            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/start/${kycId}`);
             if (res.data.success) {
                 navigate(`/kyc-session/${kycId}`);
             } else {
@@ -32,7 +49,7 @@ export default function KycReceivePage() {
             alert("Lỗi khi nhận đơn KYC.");
         }
     };
-
+    
     if (!kycInfo) return <div className="p-4 text-center">Đang tải thông tin KYC...</div>;
 
     return (

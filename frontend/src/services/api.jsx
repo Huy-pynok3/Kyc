@@ -109,7 +109,7 @@ export const fetchSessions = async () => {
     throw new Error("Invalid token");
   }
   // console.log("Token:", token);
-  const res = await axios.get(`${API_BASE_URL}/api/kyc/sessions`, {
+  const res = await axios.get(`${API_BASE_URL}/api/kyc/sessions`,{
     headers: {
       Authorization: `Bearer ${token}`,
     },

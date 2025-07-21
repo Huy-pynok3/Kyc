@@ -18,7 +18,7 @@ const router = express.Router();
 //client
 router.post("/submit",verifyToken, submitKyc);
 router.get("/status/:wallet",verifyToken, getKycStatus);
-router.get("/status/:wallet",verifyToken, getKycStatusByWallet);
+// router.get("/status/:wallet",verifyToken, getKycStatusByWallet);
 
 
 // Admin routes

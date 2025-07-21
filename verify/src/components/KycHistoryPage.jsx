@@ -59,6 +59,9 @@ export default function KycHistoryPage() {
                             <p className="text-sm text-gray-500">
                                 <strong>Ví:</strong> {item.wallet.slice(0, 6)}...{item.wallet.slice(-4)}
                             </p>
+                            <p className="text-sm text-blue-600">
+                                <strong>Mã đơn:</strong> {item.kycSessionId}
+                            </p>
                             <p className="text-sm">
                                 <strong>Gửi lúc:</strong>{" "}
                                 {new Date(item.imageUploadedAt || item.startedAt).toLocaleString("vi-VN")}

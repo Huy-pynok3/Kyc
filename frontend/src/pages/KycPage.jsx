@@ -54,7 +54,11 @@ export default function KycPage() {
       setCheckingPayment(true);
     
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/check-payment?from=${walletData.wallet}`);
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/check-payment?from=${walletData.wallet}`,{
+            headers: {
+                Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+            },
+        });
         const data = await res.json();
     
         if (data.success) {
@@ -114,7 +118,7 @@ export default function KycPage() {
                 );
                 const data = await res.json();
 
-                if (["approved", "pending", "rejected"].includes(data.status)) {
+                if (["approved", "pending", "rejected", "checking"].includes(data.status)) {
                     // Nếu ví đã tồn tại, tự động chuyển hướng sang trang trạng thái
                     navigate(`/status?wallet=${walletData.wallet}`);
                 }

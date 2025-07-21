@@ -28,7 +28,7 @@ const ERC20_ABI = ["event Transfer(address indexed from, address indexed to, uin
 const usdt = new ethers.Contract(process.env.USDT_CONTRACT, ERC20_ABI, provider);
 
 // Route kiểm tra thanh toán
-router.get("/check-payment", async (req, res) => {
+router.get("/check-payment",verifyToken, async (req, res) => {
     const from = req.query.from?.toLowerCase();
     if (!from || !ethers.isAddress(from)) {
         return res.status(400).json({ success: false, error: "Địa chỉ không hợp lệ" });
@@ -60,6 +60,7 @@ router.get("/check-payment", async (req, res) => {
             if (!manual.notified) {
                 await sendTelegramAlert("payment", {
                     method: "crypto",
+                    txHash: manual.txHash || "Chưa có",
                     wallet: manual.from,
                     amount: manual.amount,
                     note: "✅ Duyệt tay (forceApproved)",
@@ -178,7 +179,7 @@ router.post("/manual-approve",auth, async (req, res) => {
             { from: lowerWallet },
             {
                 txHash: "manual-" + Date.now(),
-                amount: "0",
+                amount: "0.000001", // Số lượng mặc định cho duyệt tay
                 confirmedAt: new Date(),
                 forceApproved: true,
             },
