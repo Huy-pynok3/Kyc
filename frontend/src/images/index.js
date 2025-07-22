@@ -6,6 +6,9 @@ import step3 from "./step3.png";
 import step4 from "./step4.png";
 import case1 from "./case1.png";
 import case2 from "./case2.png";
+import zalo from "./icons8-zalo-48.png";
+import shopee from "./icons8-shopee-48.png";
+
 
 export default {
     metamask,
@@ -16,4 +19,6 @@ export default {
     step4,
     case1,
     case2,
+    zalo,
+    shopee,
 }

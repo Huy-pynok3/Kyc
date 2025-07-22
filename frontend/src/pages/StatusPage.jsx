@@ -13,7 +13,7 @@ export default function StatusPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchStatus = async () => {
+        const fetchStatus = async () => { 
             try {
                 const url = `${import.meta.env.VITE_API_BASE_URL}/api/kyc/status/${wallet}`
                 const res = await fetch(url,

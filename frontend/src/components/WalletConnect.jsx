@@ -1,20 +1,24 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { WalletContext } from "@/contexts/WalletContext";
+import { HelpCircle } from "lucide-react";
+import useTooltip from "@/hooks/useTooltip";
 
 export default function WalletConnect({ onSigned }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    const { connectWallet } = useContext(WalletContext); // lấy hàm connectWallet từ context
+    const { wallet, connectWallet } = useContext(WalletContext); // lấy hàm connectWallet từ context
+    const iconRef = useRef(null);
+    const { showTooltip, setShowTooltip, tooltipRef } = useTooltip();
 
     function isMobile() {
         return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      }
-    
-      function isMetaMaskInstalled() {
+    }
+
+    function isMetaMaskInstalled() {
         return typeof window.ethereum !== "undefined" && window.ethereum.isMetaMask;
-      }
-    
+    }
+
     const connectAndSign = async () => {
         setLoading(true);
         setError("");
@@ -25,18 +29,21 @@ export default function WalletConnect({ onSigned }) {
         const hasEthereum = isMetaMaskInstalled();
         if (!hasEthereum) {
             if (isMobileBrowser) {
-              // Gợi ý mở bằng app Metamask
-              const currentUrl = window.location.href;
-              const dappLink = `https://metamask.app.link/dapp/${currentUrl.replace(/^https?:\/\//, "")}`;
-              window.location.href = dappLink;
-              return;
+                // Gợi ý mở bằng app Metamask
+                const currentUrl = window.location.href;
+                const dappLink = `https://metamask.app.link/dapp/${currentUrl.replace(/^https?:\/\//, "")}`;
+                window.location.href = dappLink;
+                return;
             } else {
                 setError("Vui lòng cài đặt Metamask extension trên trình duyệt.");
-                 window.open("https://chromewebstore.google.com/detail/nkbihfbeogaeaoehlefnkodbefgpgknn?utm_source=item-share-cb", "_blank");
-                 setLoading(false);
-              return;
+                window.open(
+                    "https://chromewebstore.google.com/detail/nkbihfbeogaeaoehlefnkodbefgpgknn?utm_source=item-share-cb",
+                    "_blank"
+                );
+                setLoading(false);
+                return;
             }
-          }
+        }
         //
         try {
             // if (!window.ethereum) throw new Error("Vui lòng cài Metamask");
@@ -61,11 +68,52 @@ export default function WalletConnect({ onSigned }) {
     };
 
     return (
-        <div className="p-4 space-y-4 border rounded-xl shadow-md max-w-md mx-auto">
-            <h2 className="text-lg font-semibold">Bước 1: Kết nối ví và ký xác nhận</h2>
-            <Button className="cursor-grab" onClick={connectAndSign} disabled={loading}>
-                {loading ? "Đang ký..." : "Kết nối & ký Metamask"}
-            </Button>
+        <div className="relative p-4 space-y-4 border rounded-xl shadow-md max-w-md mx-auto">
+            <div className="flex justify-center items-center gap-1 relative">
+                <h2 className="text-lg font-semibold">Bước 1: Kết nối ví và ký xác nhận</h2>
+                <button
+                    ref={iconRef}
+                    className="text-blue-600 hover:text-blue-800 focus:outline-none relative"
+                    onClick={() => setShowTooltip((prev) => !prev)}
+                    title="Tại sao cần ký ví ?"
+                >
+                    <HelpCircle className="w-4 h-4 text-blue-600 cursor-pointer animate-bounce" />
+                </button>
+            </div>
+
+            {/* Tooltip */}
+            {showTooltip && (
+                <div
+                    ref={tooltipRef}
+                    className="absolute z-50 bg-white border border-indigo-300 text-sm text-gray-800 rounded-md shadow-md w-72 px-2 py-2"
+                    style={{
+                        top: iconRef.current?.offsetTop + 40,
+                        left: iconRef.current?.offsetLeft - 250 + 15, // căn chỉnh tùy theo layout
+                    }}
+                >
+                    <div
+                        className="absolute w-3 h-3 bg-white rotate-45 border-l border-t border-indigo-300"
+                        style={{
+                            top: "-6px",
+                            left: "250px", // canh đúng dưới icon
+                        }}
+                    />
+                    <p className="text-sm text-gray-500 bg-gray-100 p-3 rounded-lg border border-gray-200">
+                        <strong>Ký ví Metamask KHÔNG làm mất ví.</strong> Đây chỉ là bước xác nhận bạn là chủ sở hữu ví.
+                        Hệ thống
+                        <strong> không yêu cầu gửi coin, không lưu private key</strong> và
+                        <strong> không tốn phí gas.</strong> Bạn có thể kiểm tra nội dung trước khi ký.
+                    </p>
+                </div>
+            )}
+            {wallet ? (
+                <Button onClick={() => onSigned({ wallet })}>Tiếp tục</Button>
+            ) : (
+                <Button onClick={connectAndSign} disabled={loading}>
+                    {loading ? "Đang ký..." : "Kết nối & ký Metamask"}
+                </Button>
+            )}
+
             {error && <p className="text-red-500 text-sm">{error}</p>}
         </div>
     );

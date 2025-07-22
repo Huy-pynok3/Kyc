@@ -50,33 +50,36 @@ export default function KycPage() {
     //     setCheckingPayment(false);
     // };
     const checkPayment = async () => {
-      if (!walletData?.wallet) return;
-      setCheckingPayment(true);
-    
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/check-payment?from=${walletData.wallet}`,{
-            headers: {
-                Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
-            },
-        });
-        const data = await res.json();
-    
-        if (data.success) {
-          if (!hasPaidRef.current) {
-            setHasPaid(data.success);
-            hasPaidRef.current = true;
-    
-            setJustPaid(true);
-            setTimeout(() => setJustPaid(false), 4000);
-          }
+        if (!walletData?.wallet) return;
+        setCheckingPayment(true);
+
+        try {
+            const res = await fetch(
+                `${import.meta.env.VITE_API_BASE_URL}/api/check-payment?from=${walletData.wallet}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                    },
+                }
+            );
+            const data = await res.json();
+
+            if (data.success) {
+                if (!hasPaidRef.current) {
+                    setHasPaid(data.success);
+                    hasPaidRef.current = true;
+
+                    setJustPaid(true);
+                    setTimeout(() => setJustPaid(false), 4000);
+                }
+            }
+
+            setPaymentResult(data);
+        } catch (err) {
+            console.error("Lỗi khi kiểm tra giao dịch:", err);
         }
-    
-        setPaymentResult(data);
-      } catch (err) {
-        console.error("Lỗi khi kiểm tra giao dịch:", err);
-      }
-    
-      setCheckingPayment(false);
+
+        setCheckingPayment(false);
     };
 
     // Kiểm tra thanh toán mỗi 5 giây
@@ -106,16 +109,13 @@ export default function KycPage() {
     // }, [hasPaid]);
     useEffect(() => {
         if (!walletData?.wallet) return navigate("/");
-
         const checkExistingKyc = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/status/${walletData.wallet}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
-                        },
-                    }
-                );
+                const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/status/${walletData.wallet}`, {
+                    headers: {
+                        Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                    },
+                });
                 const data = await res.json();
 
                 if (["approved", "pending", "rejected", "checking"].includes(data.status)) {
@@ -124,7 +124,7 @@ export default function KycPage() {
                 }
             } catch (err) {
                 console.log("Ví chưa có KYC – tiếp tục cho phép nhập form");
-            }
+            } 
         };
 
         checkExistingKyc();
@@ -149,7 +149,6 @@ export default function KycPage() {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
-
                 },
                 body: JSON.stringify(payload),
             });
@@ -183,13 +182,10 @@ export default function KycPage() {
             }}
         >
             <div className="bg-white p-6 rounded-xl shadow-md max-w-md w-full space-y-6">
-
-
                 {!hasPaid ? (
                     <>
                         <FloatingMascots hidden={true} />
                         <PaymentSection
-
                             wallet={walletData.wallet}
                             checkingPayment={checkingPayment}
                             checkPayment={checkPayment}
@@ -239,30 +235,34 @@ export default function KycPage() {
               </div>
             )} */}
                     </>
-                ) :
-                justPaid ? (
-                <>
-                    <FloatingMascots />
+                ) : justPaid ? (
+                    <>
+                        <FloatingMascots />
 
-                  <div className="mb-4 bg-green-100 border border-green-300 text-green-800 px-4 py-4 rounded-lg shadow-md
-                  transition-all duration-500 ease-in-out transform hover:scale-[1.01]">
-                      <h3 className="text-sm font-semibold mb-1">💸 Thanh toán thành công!</h3>
-                      <p className="text-sm mb-2">Cảm ơn bạn đã thanh toán. Vui lòng hoàn tất bước KYC bên dưới.</p>
-                      <button
-                          onClick={() => setJustPaid(false)} // hoặc ẩn tự động sau 5s
-                          className="text-green-700 underline text-xs"
-                      >
-                          Đóng
-                      </button>
-                  </div>
-                </>
-              ) :
-                (!kycSubmitted) ? (
+                        <div
+                            className="mb-4 bg-green-100 border border-green-300 text-green-800 px-4 py-4 rounded-lg shadow-md
+                  transition-all duration-500 ease-in-out transform hover:scale-[1.01]"
+                        >
+                            <h3 className="text-sm font-semibold mb-1">💸 Thanh toán thành công!</h3>
+                            <p className="text-sm mb-2">
+                                Cảm ơn bạn đã thanh toán. Vui lòng hoàn tất bước KYC bên dưới.
+                            </p>
+                            <button
+                                onClick={() => setJustPaid(false)} // hoặc ẩn tự động sau 5s
+                                className="text-green-700 underline text-xs"
+                            >
+                                Đóng
+                            </button>
+                        </div>
+                    </>
+                ) : !kycSubmitted ? (
                     <>
                         <FloatingMascots />
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
-                                <label className="block mb-1 text-sm font-medium text-gray-600">Email (tuỳ chọn):</label>
+                                <label className="block mb-1 text-sm font-medium text-gray-600">
+                                    Email (tuỳ chọn):
+                                </label>
                                 <input
                                     type="email"
                                     value={email}
@@ -294,7 +294,6 @@ export default function KycPage() {
                                 {loading ? "Đang xử lý..." : "Tạo phiên KYC"}
                             </button>
                         </form>
-
                     </>
                 ) : (
                     <>
@@ -302,7 +301,6 @@ export default function KycPage() {
                         <div className="text-center">
                             <p className="mb-2 text-green-600 font-semibold">
                                 <Check size={20} className="text-green-600" />
-
                                 Đã ghi nhận thông tin!
                             </p>
 

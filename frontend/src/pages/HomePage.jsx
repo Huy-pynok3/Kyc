@@ -12,7 +12,8 @@ export default function HomePage() {
 
     const handleSigned = (data) => {
         setWalletData(data);
-        navigate("/kyc", { state: data }); // chuyển sang bước 2
+        // navigate("/kyc", { state: data }); 
+        navigate("/choose-kyc", { state: data }); 
     };
 
     return (
@@ -39,6 +40,8 @@ export default function HomePage() {
                 </p>
 
                 <WalletConnect onSigned={handleSigned} />
+
+
                 <button
                   onClick={() => navigate("/guide")}
                   className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 underline"
