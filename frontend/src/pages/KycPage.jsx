@@ -280,7 +280,7 @@ export default function KycPage() {
                                     type="url"
                                     value={mapleLink}
                                     onChange={(e) => setMapleLink(e.target.value)}
-                                    placeholder="https://maplestorynexon.com/kyc?id=..."
+                                    placeholder="https://form.argosidentity.com/?pid=p4n42yhhy1&..."
                                     className="w-full px-3 py-2 border rounded-lg"
                                     required
                                 />

@@ -280,9 +280,9 @@ router.post("/upload/:id", verifyToken, upload.array("images", 4), async (req, r
     try {
         const kycId = req.params.id;
         const studentId = req.body.studentId; 
-        const bankInfo = req.body.bankInfo;
         const files = req.files;
-
+        const bankInfo = req.body.bankInfo; 
+        const kycSessionId = req.body.kycSessionId;
         // console.log("[UPLOAD] BODY:", req.body);
         // console.log("[UPLOAD] FILES:", files);
 
@@ -412,6 +412,53 @@ router.get("/history/:studentId/kycs", verifyToken, async (req, res) => {
 //     }
 //   });
   
+router.get("/:wallet/images", async (req, res) => {
+    const { wallet } = req.params;
+
+    try {
+        const kyc = await Kyc.findOne({ wallet });
+        if (!kyc) return res.status(404).json({ error: "Không tìm thấy KYC" });
+
+        const session = await Session.findOne({
+            kycId: kyc._id,
+            status: "paid",
+            uploadedImages: { $exists: true, $not: { $size: 0 } },
+        });
+
+        if (!session) return res.status(404).json({ error: "Không tìm thấy ảnh" });
+
+        // res.json({ images: session.uploadedImages },  time: session.paidAt); // Mảng URL string
+        res.json({
+            images: session.uploadedImages,
+            paidAt: session.paidAt, // Chuyển sang ISO string
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Lỗi server" });
+    }
+});
+router.get("/session/:kycId", async (req, res) => {
+    const { kycId } = req.params;
   
+    if (!kycId) {
+      return res.status(400).json({ error: 'Thiếu kycId' });
+    }
+  
+    try {
+      const session = await Session.findOne({ kycId }).sort({ clickedConfirmedAt: -1 });
+  
+      if (!session) {
+        return res.status(404).json({ error: 'Không tìm thấy phiên xác minh' });
+      }
+  
+      return res.json({
+        sessionId: session._id,
+        kycSessionId: session.kycSessionId,
+      });
+    } catch (error) {
+      console.error("Lỗi lấy session:", error);
+      return res.status(500).json({ error: 'Lỗi server' });
+    }
+  });
 
 export default router;

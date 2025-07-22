@@ -5,6 +5,7 @@ const preSteps = [
     {
         title: "Bạn chưa xác minh danh tính (KYC) trong MapleStory N",
         image: img.case1,
+        description: "Để chơi MapleStory N, bạn cần hoàn thành KYC để đủ điều kiện.Không cần hold 10 NXPC.",
     },
     //   {
     //     title: "Trường hợp 2: Bạn đã từng tạo tài khoản nhưng chưa xác minh",
@@ -23,11 +24,15 @@ const steps = [
     },
     {
         title: "Bước 3: Quét mã QR",
-        description: "Sau khi quét mã QR, bạn sẽ thấy link KYC. Hãy sao chép link này và dán vào form KYC.",
+        description: "Sau khi quét mã QR, bạn sẽ thấy link KYC. Hãy sao chép link dạng https://form.argosidentity.com/?pid=p4n42yhhy1&... và dán vào form KYC bên mình",
         image: img.step3,
     },
     {
-        title: "Bước 4: Khi hoàn tất Verification lên level 1",
+        title: "Bước 4: Bên mình sẽ thực hiện KYC cho bạn",
+        image: img.step5,
+    },
+    {
+        title: "Bước 5: Khi hoàn tất Verification lên level 1",
         image: img.step4,
     },
 ];
@@ -68,7 +73,11 @@ export default function GuidePage() {
 
                             <div className="flex-1 text-center sm:text-left">
                                 <h3 className="text-lg font-semibold text-red-600">{caseItem.title}</h3>
+                                {caseItem.description && (
+                                    <p className="text-red-600 text-lg mt-1">{caseItem.description}</p>
+                                )}
                             </div>
+                            {/* <p className="text-gray-600 text-sm mt-1">{caseItem.description}</p> */}
                         </div>
                     ))}
                 </div>

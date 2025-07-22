@@ -6,10 +6,27 @@ export default function UploadPage() {
     const { kycId } = useParams();
     const [images, setImages] = useState([]);
     const [bankInfo, setBankInfo] = useState("");
-    const [studentId, setStudentId] = useState(localStorage.getItem("studentId") || "unknown");
+    // const [studentId, setStudentId] = useState(localStorage.getItem("studentId") || "unknown");
     const [uploading, setUploading] = useState(false);
+    const [kycSessionId, setKycSessionId] = useState("");
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const fetchSessionId = async () => {
+          try {
+            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/session/${kycId}`);
+            setKycSessionId(res.data.kycSessionId);
+          } catch (err) {
+            console.error("Không thể lấy session:", err.response?.data || err.message);
+          }
+        };
+    
+        if (kycId) {
+          fetchSessionId();
+        }
+      }, [kycId]);
+
+      
     useEffect(() => {
         if (!kycId) return;
 
@@ -74,7 +91,8 @@ export default function UploadPage() {
 
         const formData = new FormData();
         formData.append("kycId", kycId);
-        formData.append("studentId", studentId);
+        // formData.append("studentId", studentId);
+        formData.append("kycSessionId", kycSessionId); // Thêm sessionId
         formData.append("bankInfo", bankInfo);
         images.forEach((img, index) => {
             formData.append(`images`, img);

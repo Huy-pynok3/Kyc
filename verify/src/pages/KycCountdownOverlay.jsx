@@ -130,7 +130,8 @@ export default function KycCountdownOverlay() {
                     })
                     .catch((err) => {
                         console.error("Lỗi khi cập nhật trạng thái KYC:", err);
-                        alert("❌ Có lỗi xảy ra khi cập nhật trạng thái KYC.");
+                        alert("Đã hết thời gian KYC. Vui lòng thử lại sau.");
+                        // alert("❌ Có lỗi xảy ra khi cập nhật trạng thái KYC.");
                     });
                 navigate("/order");
             }
