@@ -41,11 +41,11 @@ export default function HomePage() {
                 <WalletConnect onSigned={handleSigned} />
                 <button
                   onClick={() => navigate("/guide")}
-                  className="mt-4 inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 underline"
+                  className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 underline"
                 >
                   📘 Xem hướng dẫn lấy link KYC
                 </button>
-                <div className="mt-4 text-sm text-gray-600 flex items-center justify-center gap-1">
+                <div className="text-sm text-gray-600 flex items-center justify-center gap-1">
                     {/* <img src={img.tele} alt="Telegram" className="w-4 h-4" /> */}
                     <span>
                         💬 Cần hỗ trợ? Liên hệ&nbsp;

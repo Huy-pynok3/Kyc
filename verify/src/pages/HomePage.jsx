@@ -44,7 +44,7 @@ const HomePage = () => {
         <div className="fixed bottom-4 left-0 right-0 flex justify-center z-10">
           <button
             onClick={handleStart}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-2xl shadow-md transition"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-2xl shadow-md transition cursor-pointer"
           >
             Nhận Job ngay
           </button>

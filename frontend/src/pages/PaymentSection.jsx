@@ -16,7 +16,8 @@ export default function PaymentSection({
 
     const [timeLeft, setTimeLeft] = useState(600); // 10 phút crypto, 5 phút bank
     const [expired, setExpired] = useState(false);
-    const amount = 100000;
+    const amount = parseInt(import.meta.env.VITE_PRICE_BANK) || 100000; 
+    const usdt = parseFloat(import.meta.env.VITE_PRICE_CRYPTO) || 5; 
     qrUrl = `https://qr.sepay.vn/img?bank=VietinBank&acc=101877183706&amount=${amount}&des=SEVQR+TKPTPT${encodeURIComponent(
         wallet
     )}&size=200x200`;
@@ -101,7 +102,7 @@ export default function PaymentSection({
                     <>
                         <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded text-sm">
                             <p className="mb-2">
-                                💰 Vui lòng chuyển <strong>5 USDT (BEP-20)</strong> đến địa chỉ:
+                                💰 Vui lòng chuyển <strong>{usdt} USDT (BEP-20)</strong> đến địa chỉ:
                             </p>
 
                             <div className="bg-gray-100 p-3 rounded break-all font-mono text-gray-800 mb-4 text-xs cursor-auto">

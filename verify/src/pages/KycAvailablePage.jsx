@@ -9,7 +9,7 @@ export default function KycAvailablePage() {
     const navigate = useNavigate();
     const amount = 40000;
     useEffect(() => {
-        console.log("useEffect chạy");
+        // console.log("useEffect chạy");
         setIsLoading(true);
         axios
             .get(`${import.meta.env.VITE_API_BASE_URL}/api/kyc/available`, {
@@ -74,7 +74,7 @@ export default function KycAvailablePage() {
 
                             <button
                                 onClick={() => handleClick(kyc._id)}
-                                className="w-full bg-blue-600 text-white py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 transition"
+                                className="w-full bg-blue-600 text-white py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 transition cursor-pointer"
                             >
                                 Nhận đơn
                             </button>

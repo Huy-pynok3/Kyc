@@ -42,7 +42,16 @@ export default function AvatarMenu() {
             {open && (
                 <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-lg overflow-hidden z-50">
                     <button className="block w-full px-4 py-2 text-left text-blue-600 text-xs font-medium italic bg-blue-50 border-l-4 border-blue-400 whitespace-nowrap truncate hover:bg-blue-100">
-                        💬 Tele ib: @minelx57
+                        {/* 💬 Tele ib: @minelx57 */}
+                        <a 
+                            href="https://t.me/minelx57"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            // className="text-blue-600 hover:text-blue-800 font-medium underline"
+                        
+                        >
+                            💬 Tele ib: @minelx57
+                        </a>
                     </button>
 
                     <button className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 focus:disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500">

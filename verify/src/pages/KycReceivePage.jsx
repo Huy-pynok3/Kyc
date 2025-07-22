@@ -100,7 +100,7 @@ export default function KycReceivePage() {
             <button
                 onClick={() => handleStartKyc()}
 
-                className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+                className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 cursor-pointer"
             >
                 Tôi sẵn sàng KYC
             </button>
