@@ -5,15 +5,16 @@ import PaymentCheck from "@/components/PaymentCheck";
 import FloatingMascots from "@/components/FloatingMascots";
 import img from "@/images";
 
-
 export default function HomePage() {
     const [walletData, setWalletData] = useState(null);
     const navigate = useNavigate();
 
     const handleSigned = (data) => {
         setWalletData(data);
-        // navigate("/kyc", { state: data }); 
-        navigate("/choose-kyc", { state: data }); 
+        // navigate("/kyc", { state: { ...walletData, kycType: type } });
+
+        navigate("/kyc", { state: data });
+        // navigate("/choose-kyc", { state: data });
     };
 
     return (
@@ -41,16 +42,14 @@ export default function HomePage() {
 
                 <WalletConnect onSigned={handleSigned} />
 
-
                 <button
-                  onClick={() => navigate("/guide")}
-                  className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 underline"
+                    onClick={() => navigate("/guide")}
+                    className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 cursor-pointer"
                 >
-                  📘 Xem hướng dẫn lấy link KYC
+                    📘 Xem hướng dẫn lấy link KYC
                 </button>
                 <div className="text-sm text-gray-600 flex items-center justify-center gap-1">
-                    {/* <img src={img.tele} alt="Telegram" className="w-4 h-4" /> */}
-                    <span>
+                    {/* <span>
                         💬 Cần hỗ trợ? Liên hệ&nbsp;
                         <a
                             href="https://t.me/minelx57"
@@ -60,9 +59,12 @@ export default function HomePage() {
                         >
                             @minelx57
                         </a>
-                    </span>
+                    </span> */}
+                <button onClick={() => navigate("/")} className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer underline">
+                    
+                    ← Quay lại trang chủ
+                </button>
                 </div>
-                
             </div>
             {/* <a
                 href="https://t.me/minelx57"
@@ -76,9 +78,6 @@ export default function HomePage() {
                 <img src={img.tele} alt="Telegram" className="w-5 h-5 sm:w-4 sm:h-4" />
                 <span className="hidden sm:inline">Hỗ trợ: @minelx57</span>
             </a> */}
-
-
-
         </div>
     );
 }

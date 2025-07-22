@@ -107,9 +107,9 @@ export default function WalletConnect({ onSigned }) {
                 </div>
             )}
             {wallet ? (
-                <Button onClick={() => onSigned({ wallet })}>Tiếp tục</Button>
+                <Button className="cursor-pointer" onClick={() => onSigned({ wallet })}>Tiếp tục</Button>
             ) : (
-                <Button onClick={connectAndSign} disabled={loading}>
+                <Button className="cursor-pointer" onClick={connectAndSign} disabled={loading}>
                     {loading ? "Đang ký..." : "Kết nối & ký Metamask"}
                 </Button>
             )}

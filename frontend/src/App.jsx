@@ -56,7 +56,7 @@ import GuidePage from "./pages/GuidePage";
 
 function App() {
   const location = useLocation();
-  const hideWallet = ["/panel", "/guide", "/choose-kyc"]; // List of paths where the wallet should be hidden
+  const hideWallet = ["/panel", "/guide", "/"]; // List of paths where the wallet should be hidden
 
   const shouldHideWallet = hideWallet.includes(location.pathname);
 
@@ -67,8 +67,9 @@ function App() {
       {!shouldHideWallet && <WalletStatus />}
 
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/choose-kyc" element={<ChooseKycPage />} />
+        <Route path="/maplestory" element={<HomePage />} />
+        {/* <Route path="/choose-kyc" element={<ChooseKycPage />} /> */}
+        <Route path="/" element={<ChooseKycPage />} />
         <Route path="/guide" element={<GuidePage />} />
         <Route path="/kyc" element={<KycPage />} />
         <Route path="/status" element={<StatusPage />} />

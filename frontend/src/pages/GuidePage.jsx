@@ -42,7 +42,7 @@ export default function GuidePage() {
                 <h1 className="text-3xl font-bold text-center text-indigo-700">Hướng dẫn thực hiện KYC</h1>
 
                 <div className="mt-6 text-center">
-                    <button onClick={() => navigate("/")} className="text-blue-600 hover:underline">
+                    <button onClick={() => navigate("/maplestory")} className="text-blue-600 hover:underline">
                         ← Quay về trang chính
                     </button>
                 </div>
@@ -111,7 +111,7 @@ export default function GuidePage() {
                 )}
 
                 <div className="mt-6 text-center">
-                    <button onClick={() => navigate("/")} className="text-blue-600 hover:underline">
+                    <button onClick={() => navigate("/maplestory")} className="text-blue-600 hover:underline">
                         ← Quay về trang chính
                     </button>
                 </div>
