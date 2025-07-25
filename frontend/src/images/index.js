@@ -5,6 +5,7 @@ import step2 from "./step2.png";
 import step3 from "./step3.png";
 import step4 from "./step4.png";
 import step5 from "./step5.png";
+import step6 from "./step6.png";
 import case1 from "./case1.png";
 import case2 from "./case2.png";
 import zalo from "./icons8-zalo-48.png";
@@ -19,6 +20,7 @@ export default {
     step3,
     step4,
     step5,
+    step6,
     case1,
     case2,
     zalo,

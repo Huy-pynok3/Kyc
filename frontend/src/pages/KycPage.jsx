@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FloatingMascots from "@/components/FloatingMascots";
 import PaymentSection from "./PaymentSection";
 import { Check } from "lucide-react";
+import jsQR from "jsqr"
+
 export default function KycPage() {
     const location = useLocation();
     const walletData = location.state;
@@ -11,7 +13,7 @@ export default function KycPage() {
     const [email, setEmail] = useState("");
     const [mapleLink, setMapleLink] = useState("");
     const [kycSubmitted, setKycSubmitted] = useState(false);
-
+    const canvasRef = useRef();
     // Payment state variables
     const [hasPaid, setHasPaid] = useState(false);
     const [checkingPayment, setCheckingPayment] = useState(false);
@@ -23,6 +25,31 @@ export default function KycPage() {
     const hasPaidRef = useRef(false); // để tracking hasPaid đúng ngay lập tức
 
     const [expired, setExpired] = useState(false); // trạng thái hết hạn thanh toán
+
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const img = new Image();
+        img.onload = () => {
+            const canvas = canvasRef.current;
+            const ctx = canvas.getContext("2d");
+
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+
+            const imageData = ctx.getImageData(0, 0, img.width, img.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+            if (code) {
+                setMapleLink(code.data);
+            } else {
+                alert("Không đọc được mã QR, vui lòng thử lại.");
+            }
+        };
+        img.src = URL.createObjectURL(file);
+    };
     // const [showKycForm, setShowKycForm] = useState(false);
     //
     // Kiểm tra thanh toán khi trang được tải
@@ -284,6 +311,24 @@ export default function KycPage() {
                                     className="w-full px-3 py-2 border rounded-lg"
                                     required
                                 />
+                            </div>
+
+                            <div>
+                                <label className="block mb-1 text-sm font-medium text-gray-600">
+                                    Hoặc upload ảnh QR KYC:
+                                </label>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageUpload}
+                                    className="w-full px-3 py-2 border rounded-lg"
+                                />
+                                <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
+                                <ul className="text-sm text-red-500 list-disc ml-5 mt-2">
+                                    <li>Ảnh cần rõ nét, đủ sáng, không bị che hoặc cắt góc QR</li>
+                                    <li>Nên cắt màn hình chỉ hiển thị mã QR</li>
+                                    <li>Upload ảnh QR KYC là hỗ trợ ae không quét được QR lấy link</li>
+                                </ul>
                             </div>
 
                             <button

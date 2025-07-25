@@ -46,7 +46,7 @@ export default function HomePage() {
                     onClick={() => navigate("/guide")}
                     className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 cursor-pointer"
                 >
-                    📘 Xem hướng dẫn lấy link KYC
+                    📘 Hướng dẫn KYC và lấy link
                 </button>
                 <div className="text-sm text-gray-600 flex items-center justify-center gap-1">
                     {/* <span>
