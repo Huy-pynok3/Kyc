@@ -50,9 +50,6 @@ import { Toaster } from "sonner";
 import ToastDisplay from "@/components/ToastDisplay";
 import ChooseKycPage from "@/components/ChooseKycPage";
 import GuidePage from "./pages/GuidePage";
-// import KycReceivePage from "./pages/KycReceivePage";
-// import KycAvailablePage from "./pages/KycAvailablePage";
-// import KycCountdownOverlay from "./pages/KycCountdownOverlay";
 
 function App() {
   const location = useLocation();
@@ -74,9 +71,6 @@ function App() {
         <Route path="/kyc" element={<KycPage />} />
         <Route path="/status" element={<StatusPage />} />
         <Route path="/panel" element={<AdminPage />} />
-        {/* <Route path="/kyc/:kycId" element={<KycReceivePage />} /> */}
-        {/* <Route path="/order" element={<KycAvailablePage />} /> */}
-        {/* <Route path="/kyc-session/:kycId" element={<KycCountdownOverlay studentId="sinhvien123" />} /> */}
       </Routes>
     </div>
   );

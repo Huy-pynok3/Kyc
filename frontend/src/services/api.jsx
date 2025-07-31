@@ -75,32 +75,6 @@ export const manualApprove = async (token, wallet) => {
   return res.json();
 };
 
-// export const fetchSessions = async ( token) => {
-//   console.log("Token:", token);
-//   const res = await axios.get(`${API_BASE_URL}/api/kyc/sessions`,{
-
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//   console.log("Data trả về:", res.data);
-//   return res.data || [];
-// };
-// export const fetchSessions = async (token) => {
-  
-//   if (!token || typeof token !== 'string') {
-//     console.error("Token không hợp lệ:", token);
-//     throw new Error("Invalid token");
-//   }
-//   console.log("Token:", token);
-//   const res = await axios.get(`${API_BASE_URL}/api/kyc/sessions`, {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//   console.log("Data trả về:", res.data);
-//   return res.data || [];
-// };
 
 export const fetchSessions = async () => {
   const token = localStorage.getItem("adminToken");

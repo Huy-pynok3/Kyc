@@ -11,25 +11,9 @@ export async function sendTelegramAlert(type, data) {
 
     const now = new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
 
-    //   if (type === "payment") {
-    //     text = `🤑 <b>[THANH TOÁN MỚI]</b>\n` +
-    //            `👤 <b>Ví:</b> ${data.wallet}\n` +
-    //            `💰 <b>Gói:</b> ${data.amount} VND\n` +
-    //            `⏱ <b>Thời gian:</b> ${now}`;
-    //   }
     if (type === "payment") {
         const method = data.method === "bank" ? "🏦 Bank Transfer" : `🐋 Crypto`;
         const currency = data.method === "crypto" ? "USDT" : "VND";
-        // const walletOrBankInfo =
-        // data.method === "crypto"
-        //     ? `👛 <b>Ví:</b> ${data.wallet}`
-        //     : `🏦 <b>Ngân hàng:</b> ${data.bankName}\n💳 <b>Số tài khoản:</b> ${data.bankAccount}`;
-
-        // text = `🤑 <b>[THANH TOÁN MỚI – ${method}]</b>\n` +
-        //     `${walletOrBankInfo}\n` +
-        //     `💰 <b>Số tiền:</b> ${data.amount} ${currency}\n` +
-        //     `⏱ <b>Thời gian:</b> ${now}`;
-
         text =
             `🤑 <b>[THANH TOÁN MỚI – ${method}]</b>\n` +
             `👛 <b>Ví:</b> ${data.wallet}\n` +

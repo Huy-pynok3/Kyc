@@ -50,13 +50,6 @@ router.get("/check-payment",verifyToken, async (req, res) => {
         // Check nếu đã được duyệt tay
         const manual = await Payment.findOne({ from, forceApproved: true });
         if (manual) {
-            // await sendTelegramAlert("payment", {
-            //     method: "crypto",
-            //     wallet: from,
-            //     amount: manual.amount,
-            //     txHash: manual.txHash || "Chưa có",
-            //     note: "Đã duyệt tay thanh toán",
-            // });
             if (!manual.notified) {
                 await sendTelegramAlert("payment", {
                     method: "crypto",
@@ -228,7 +221,7 @@ router.post("/webhook", async (req, res) => {
     const wallet = matched[1].toLowerCase();
     // const wallet = description?.trim()?.toLowerCase();
     
-    console.log("📩 Ví người dùng:", wallet)
+    // console.log("📩 Ví người dùng:", wallet)
     ;
     if (!/^0x[a-fA-F0-9]{40}$/.test(wallet)) {
         return res.status(400).json({ error: "Sai định dạng ví từ description" });

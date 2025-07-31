@@ -78,35 +78,3 @@ export default function AvatarMenu() {
         </div>
     );
 }
-
-// import { useNavigate } from "react-router-dom";
-
-// export default function AvatarMenu({ studentId }) {
-//   const navigate = useNavigate();
-//   const handleLogout = () => {
-//     localStorage.removeItem("studentId");
-//     window.location.reload(); // hoặc navigate(0)
-//   };
-
-//   return (
-//     <div className="relative group">
-//       <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center cursor-pointer text-sm font-bold">
-//         {studentId.slice(0, 2).toUpperCase()}
-//       </div>
-//       <div className="absolute right-0 mt-2 w-40 bg-white border rounded shadow hidden group-hover:block z-50">
-//         <button
-//           className="block w-full px-4 py-2 text-left hover:bg-gray-100"
-//           onClick={() => navigate("/history")}
-//         >
-//           📜 Xem lịch sử
-//         </button>
-//         <button
-//           className="block w-full px-4 py-2 text-left hover:bg-gray-100"
-//           onClick={handleLogout}
-//         >
-//           🔓 Đăng xuất
-//         </button>
-//       </div>
-//     </div>
-//   );
-// }

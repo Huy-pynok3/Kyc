@@ -21,9 +21,9 @@ export default function ChooseKycPage() {
             className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4"
             style={{
                 backgroundImage: `
-                url('/images/main/section_a/msu_symbol.png'),
+                url('https://msu.io/images/main/section_a/msu_symbol.png'),
                 url('https://msu.io/images/main/section_a/bg_section_a.png')
-            `,
+                `,
                 backgroundRepeat: "no-repeat, no-repeat",
                 backgroundPosition: "calc(50% + 375px) -347px, 50%",
                 backgroundSize: "1410px auto, cover",
@@ -40,27 +40,25 @@ export default function ChooseKycPage() {
                         onClick={() => handleSelect("maplestory")}
                         className="w-full py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition cursor-pointer"
                     >
-                        <img src="https://msu.io/favicon.ico" alt="maplestory"
-                        className="inline-block w-5 h-5 mr-2 align-middle"
+                        <img
+                            src="https://msu.io/favicon.ico"
+                            alt="maplestory"
+                            className="inline-block w-5 h-5 mr-2 align-middle"
                         />
-                            KYC MapleStory
+                        KYC MapleStory
                     </button>
                     <button
                         onClick={() => handleSelect("zalo")}
                         className="w-full py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition cursor-pointer"
                     >
-                        <img src={img.zalo} alt="zalo" 
-                        className="inline-block w-5 h-5 mr-2 align-middle"
-                        />
+                        <img src={img.zalo} alt="zalo" className="inline-block w-5 h-5 mr-2 align-middle" />
                         KYC Zalo <span className="text-xs text-red-500 ml-1">(Coming soon)</span>
                     </button>
                     <button
                         onClick={() => handleSelect("shopee")}
                         className="w-full py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition cursor-pointer"
                     >
-                        <img src={img.shopee} alt="shopee" 
-                        className="inline-block w-5 h-5 mr-2 align-middle"
-                        />
+                        <img src={img.shopee} alt="shopee" className="inline-block w-5 h-5 mr-2 align-middle" />
                         KYC Shopee <span className="text-xs text-red-500 ml-1">(Coming soon)</span>
                     </button>
                     <button
@@ -70,14 +68,7 @@ export default function ChooseKycPage() {
                         💹 KYC Sàn Cỏ<span className="text-xs text-red-500 ml-1">(Coming soon)</span>
                     </button>
                 </div>
-
-                {/* <button
-                    onClick={() => navigate("/")}
-                    className="text-sm text-blue-600 underline hover:text-blue-800"
-                >
-                    ← Quay lại trang chủ
-                </button> */}
-            <div className="text-sm text-gray-600 flex items-center justify-center gap-1">
+                <div className="text-sm text-gray-600 flex items-center justify-center gap-1">
                     <span>
                         💬 Cần hỗ trợ? Liên hệ&nbsp;
                         <a

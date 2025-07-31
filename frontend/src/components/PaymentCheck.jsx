@@ -20,7 +20,7 @@ export default function PaymentCheck({ wallet, onSuccess }) {
         const data = await res.json();
 
         if (data.success) {
-          onSuccess(data); // 🔁 Gọi callback nếu đã thanh toán hoặc duyệt tay
+          onSuccess(data); // Gọi callback nếu đã thanh toán hoặc duyệt tay
         } else {
           setError(data.message || "Chưa phát hiện thanh toán");
         }

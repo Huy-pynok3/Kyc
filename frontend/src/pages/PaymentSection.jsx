@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { CreditCard } from "lucide-react";
 
 export default function PaymentSection({
     wallet,
@@ -66,9 +65,6 @@ export default function PaymentSection({
         <div className="bg-white shadow-md rounded-xl p-4 sm:p-6 w-full max-w-xl mx-auto space-y-4 cursor-grab">
             <h2 className="text-2xl font-bold text-indigo-700 text-center">Bước 2: 💸 Thanh toán KYC</h2>
 
-            {/* <h2 className="text-xl font-bold text-center text-indigo-700 cursor-grab">
-                💳 Chọn phương thức thanh toán
-            </h2> */}
             <h2 className="text-xl font-semibold text-indigo-700 mb-4 text-center cursor-grab">
                 💳 Chọn phương thức thanh toán
             </h2>
@@ -184,16 +180,6 @@ export default function PaymentSection({
                             </div>
                         )}
                     </>
-                    // <div className="bg-blue-50 border border-blue-200 text-blue-800 p-4 rounded text-sm">
-                    //   <p>💸 Vui lòng chuyển khoản <strong>100,000đ</strong> đến:</p>
-                    //   <ul className="bg-white border mt-2 rounded p-3 text-sm space-y-1">
-                    //     <li><strong>Ngân hàng:</strong> Vietcombank</li>
-                    //     <li><strong>Tên:</strong> NGUYEN VAN A</li>
-                    //     <li><strong>Số tài khoản:</strong> 0123456789</li>
-                    //     <li><strong>Nội dung:</strong> KYC {wallet?.slice(0, 6).toUpperCase()}</li>
-                    //   </ul>
-                    //   {/* <p className="mt-2">Gửi ảnh chụp màn hình cho admin để xác nhận nhanh.</p> */}
-                    // </div>
                 )
             ) : (
                 <div className="bg-red-50 border border-red-300 text-red-700 p-4 rounded text-sm text-center">

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import img from "@/images"; // bạn đã import đúng ở đây
+import img from "@/images"; 
 import { useState } from "react";
 const preSteps = [
     {
@@ -67,7 +67,6 @@ export default function GuidePage() {
                         <div
                             key={idx}
                             className="bg-red-50 rounded-xl border-red-300 shadow p-4 flex flex-col sm:flex-row items-center gap-4"
-                        //  className="bg-red-50 bg-opacity-90 border border-yellow-300 p-4 rounded-xl text-sm text-center"
 
                         >
                             <img
@@ -89,7 +88,7 @@ export default function GuidePage() {
 
                     <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded-md">
                         <p className="font-semibold">⚠️ Cảnh báo lừa đảo:</p>
-                        <p>Cẩn thận các nhóm ảo, cá nhân, "hướng dẫn newbie" nhưng lại bày chiêu trò “không cần KYC vẫn chơi được” – dễ dính scam! Không ai cho không ai cái gì -- Không ai rảnh mà bỏ thời gian ra hướng dẫn bạn! Ví Metamask không đổi được 12 ký tự, private key nó là duy nhất lộ là coi như mất. Họ có thể lấy ví bạn để trục lợi. Hãy chỉ làm KYC từ nguồn tin cậy!</p>
+                        <p>Cẩn thận các nhóm ảo, cá nhân, "hướng dẫn newbie" nhưng lại bày chiêu trò “không cần KYC vẫn chơi được” – dễ dính scam! Ví Metamask không đổi được 12 ký tự, private key nó là duy nhất lộ là coi như mất. Hãy chỉ làm KYC từ nguồn tin cậy!</p>
                     </div>
                 </div>
 

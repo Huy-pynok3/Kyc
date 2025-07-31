@@ -49,35 +49,12 @@ export default function HomePage() {
                     📘 Hướng dẫn KYC và lấy link
                 </button>
                 <div className="text-sm text-gray-600 flex items-center justify-center gap-1">
-                    {/* <span>
-                        💬 Cần hỗ trợ? Liên hệ&nbsp;
-                        <a
-                            href="https://t.me/minelx57"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 font-medium underline"
-                        >
-                            @minelx57
-                        </a>
-                    </span> */}
                 <button onClick={() => navigate("/")} className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer underline">
                     
                     ← Quay lại trang chủ
                 </button>
                 </div>
             </div>
-            {/* <a
-                href="https://t.me/minelx57"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="fixed bottom-6 right-6 bg-gradient-to-r from-blue-500 to-indigo-500 text-white 
-             px-4 py-2 rounded-full shadow-lg text-sm flex items-center gap-2 
-             hover:scale-105 transition 
-             sm:text-xs sm:px-3 sm:py-1.5 sm:gap-1.5"
-            >
-                <img src={img.tele} alt="Telegram" className="w-5 h-5 sm:w-4 sm:h-4" />
-                <span className="hidden sm:inline">Hỗ trợ: @minelx57</span>
-            </a> */}
         </div>
     );
 }

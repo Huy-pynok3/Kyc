@@ -9,7 +9,6 @@ import {
     getKycSessions,
     updateSessionStatus,
 } from "../controllers/kycController.js";
-// import { getKycInfo, getAvailableKyc } from '../controllers/verifyController.js';
 import  verifyToken  from '../middlewares/authToken.js';
 import auth from "../middlewares/auth.js";
 

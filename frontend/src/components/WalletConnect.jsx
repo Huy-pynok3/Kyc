@@ -88,7 +88,7 @@ export default function WalletConnect({ onSigned }) {
                     className="absolute z-50 bg-white border border-indigo-300 text-sm text-gray-800 rounded-md shadow-md w-72 px-2 py-2"
                     style={{
                         top: iconRef.current?.offsetTop + 40,
-                        left: iconRef.current?.offsetLeft - 250 + 15, // căn chỉnh tùy theo layout
+                        left: iconRef.current?.offsetLeft - 250 + 15, // căn chỉnh theo layout
                     }}
                 >
                     <div

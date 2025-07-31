@@ -12,10 +12,8 @@ export default function StatusPage() {
     const [info, setInfo] = useState(null);
     const [loading, setLoading] = useState(true);
 
-
     const [images, setImages] = useState([]);
     const [showImages, setShowImages] = useState(false);
-
 
     const [previewUrl, setPreviewUrl] = useState(null);
     const [paidAt, setPaidAt] = useState(null);
@@ -52,7 +50,6 @@ export default function StatusPage() {
                         console.warn("Không lấy được ảnh KYC");
                     }
                 }
-
             } catch (err) {
                 alert("Lỗi khi tải trạng thái KYC.");
             }
@@ -122,8 +119,8 @@ export default function StatusPage() {
                     </p>
 
                     {/* {status === "rejected" && rejectedReason && (
-            <p className="text-red-500">❌ Lý do từ chối: {rejectedReason}</p>
-          )} */}
+                        <p className="text-red-500">❌ Lý do từ chối: {rejectedReason}</p>
+                    )} */}
                     {status === "rejected" && (
                         <div className="mt-2 text-sm text-red-600">
                             <Syringe size={20} className="inline mr-1" />
@@ -157,59 +154,60 @@ export default function StatusPage() {
                             </div>
                         </div>
                     )} */}
-                                    {status === "approved" && paidAt && (
-                    <>
-                        <div className="bg-green-50 border border-green-300 rounded p-3 mt-4 text-green-700">
-                            <div className="flex items-center gap-2">
-                                <Check size={20} className="text-green-600" />
-                                {/* <span>KYC đã được duyệt lúc {formatDate(processedAt)}</span> */}
-                                <span>KYC đã được duyệt lúc {new Date(paidAt).toLocaleString("vi-VN")}</span>
+                    {status === "approved" && paidAt && (
+                        <>
+                            <div className="bg-green-50 border border-green-300 rounded p-3 mt-4 text-green-700">
+                                <div className="flex items-center gap-2">
+                                    <Check size={20} className="text-green-600" />
+                                    {/* <span>KYC đã được duyệt lúc {formatDate(processedAt)}</span> */}
+                                    <span>KYC đã được duyệt lúc {new Date(paidAt).toLocaleString("vi-VN")}</span>
+                                </div>
+                                <div className="flex items-center gap-2 mt-2">
+                                    <PartyPopper size={20} className="text-yellow-500" />
+                                    <span>Bạn đã đủ điều kiện chơi MapleStory N!</span>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-2 mt-2">
-                                <PartyPopper size={20} className="text-yellow-500" />
-                                <span>Bạn đã đủ điều kiện chơi MapleStory N!</span>
-                            </div>
-                        </div>
 
-                        {info.status === "approved" && images.length > 0 && (
-                            <div className="mt-4">
-                                                                <button
-                                    onClick={() => setShowImages(!showImages)}
-                                    className="text-sm text-blue-600 underline"
+                            {info.status === "approved" && images.length > 0 && (
+                                <div className="mt-4">
+                                    <button
+                                        onClick={() => setShowImages(!showImages)}
+                                        className="text-sm text-blue-600 underline"
+                                    >
+                                        {showImages ? "Ẩn ảnh" : "Xem chi tiết ảnh đã xác minh"}
+                                    </button>
+                                    {/* <p className="text-sm font-semibold mb-2 text-gray-700">Ảnh đã gửi:</p> */}
+                                    {showImages && (
+                                        <div className="grid grid-cols-3 gap-2 mt-2">
+                                            {images.map((url, index) => (
+                                                <img
+                                                    key={index}
+                                                    src={url}
+                                                    alt={`Ảnh ${index + 1}`}
+                                                    className="w-full h-24 object-cover rounded cursor-pointer border"
+                                                    onClick={() => setPreviewUrl(url)}
+                                                />
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* Modal hiển thị ảnh lớn */}
+                            {previewUrl && (
+                                <div
+                                    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+                                    onClick={() => setPreviewUrl(null)}
                                 >
-                                    {showImages ? "Ẩn ảnh" : "Xem chi tiết ảnh đã xác minh"}
-                                </button>
-                                {/* <p className="text-sm font-semibold mb-2 text-gray-700">Ảnh đã gửi:</p> */}
-                                {showImages &&
-                                (<div className="grid grid-cols-3 gap-2 mt-2">
-                                    {images.map((url, index) => (
-                                        <img
-                                            key={index}
-                                            src={url}
-                                            alt={`Ảnh ${index + 1}`}
-                                            className="w-full h-24 object-cover rounded cursor-pointer border"
-                                            onClick={() => setPreviewUrl(url)}
-                                        />
-                                    ))}
-                                </div>)}
-                            </div>
-                        )}
+                                    <img
+                                        src={previewUrl}
+                                        alt="Xem ảnh lớn"
+                                        className="max-w-[90%] max-h-[90%] rounded shadow-lg"
+                                    />
+                                </div>
+                            )}
 
-                        {/* Modal hiển thị ảnh lớn */}
-                        {previewUrl && (
-                            <div
-                                className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-                                onClick={() => setPreviewUrl(null)}
-                            >
-                                <img
-                                    src={previewUrl}
-                                    alt="Xem ảnh lớn"
-                                    className="max-w-[90%] max-h-[90%] rounded shadow-lg"
-                                />
-                            </div>
-                        )}
-
-                        {/* {info.status === "approved" && images.length > 0 && (
+                            {/* {info.status === "approved" && images.length > 0 && (
                             <div className="mt-4 z-100">
                                 <button
                                     onClick={() => setShowImages(!showImages)}
@@ -232,9 +230,8 @@ export default function StatusPage() {
                                 )}
                             </div>
                         )} */}
-                        
-                    </>
-                )}
+                        </>
+                    )}
                 </div>
             </div>
         </div>

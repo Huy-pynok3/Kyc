@@ -55,9 +55,9 @@ const LoginScreen = ({ studentId, setStudentId }) => {
             className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-blue-100 to-gray-100"
             style={{
                 backgroundImage: `
-        url('https://msu.io/images/main/section_a/msu_symbol.png'),
-        url('https://msu.io/images/main/section_a/bg_section_a.png')
-      `,
+                    url('https://msu.io/images/main/section_a/msu_symbol.png'),
+                    url('https://msu.io/images/main/section_a/bg_section_a.png')
+                `,
                 backgroundRepeat: "no-repeat, no-repeat",
                 backgroundPosition: "center -347px, center",
                 backgroundSize: "contain, cover",
@@ -121,94 +121,3 @@ const LoginScreen = ({ studentId, setStudentId }) => {
 
 export default LoginScreen;
 
-// import { useState } from "react";
-// import { toast, ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// // import { useNavigate } from "react-router-dom";
-// // const navigate = useNavigate();
-// const LoginScreen = () => {
-//     const [inputId, setInputId] = useState("");
-//     const [studentId, setStudentId] = useState(localStorage.getItem("studentId") || "");
-
-//     const handleUseCode = () => {
-//         if (inputId.trim()) {
-//             localStorage.setItem("studentId", inputId.trim());
-//             setStudentId(inputId.trim());
-//             toast.success("Đăng nhập thành công!", { autoClose: 2000 });
-//         } else {
-//             toast.error("Vui lòng nhập mã!", { autoClose: 2000 });
-//         }
-//     };
-
-//     const handleGenerateCode = () => {
-//         const newRandomId = "KYC-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-//         setInputId(newRandomId); // Cập nhật mã ngẫu nhiên vào input
-//         toast.success("Tạo mã mới thành công!", { autoClose: 2000 });
-//     };
-
-//     const handleCopyCode = () => {
-//         if (inputId.trim()) {
-//             navigator.clipboard.writeText(inputId);
-//             toast.success("Đã sao chép mã!", { autoClose: 2000 });
-//         } else {
-//             toast.error("Không có mã để sao chép!", { autoClose: 2000 });
-//         }
-//     };
-
-//     if (!studentId) {
-//         return (
-//             <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-blue-100 to-gray-100">
-//                 <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm sm:max-w-md text-center space-y-6">
-//                     <h2 className="text-2xl font-bold text-gray-800">🔐 Nhập hoặc tạo mã</h2>
-
-//                     {/* Input cho mã */}
-//                     <div className="relative">
-//                         <input
-//                             type="text"
-//                             className="w-full border rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
-//                             placeholder="Nhập mã (nếu đã có)"
-//                             value={inputId}
-//                             onChange={(e) => setInputId(e.target.value)}
-//                             onKeyDown={(e) => e.key === "Enter" && handleUseCode()}
-//                         />
-//                         <button
-//                             className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-100 px-2 py-1 rounded text-blue-600 hover:bg-blue-200"
-//                             onClick={handleCopyCode}
-//                             aria-label="Sao chép mã"
-//                         >
-//                             📋
-//                         </button>
-//                     </div>
-
-//                     {/* Các nút hành động */}
-//                     <div className="flex flex-col sm:flex-row justify-center gap-3">
-//                         <button
-//                             className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:bg-blue-300"
-//                             onClick={handleUseCode}
-//                             disabled={!inputId.trim()}
-//                         >
-//                             Đăng nhập
-//                         </button>
-//                         <button
-//                             className="bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors"
-//                             onClick={handleGenerateCode}
-//                         >
-//                             Tạo mã mới
-//                         </button>
-//                     </div>
-//                 </div>
-//                 <ToastContainer
-//                     position="top-center"
-//                     autoClose={2000}
-//                     hideProgressBar
-//                     closeOnClick
-//                     pauseOnHover
-//                     theme="light"
-//                 />
-//             </div>
-//         );
-//     }
-
-// };
-
-// export default LoginScreen;

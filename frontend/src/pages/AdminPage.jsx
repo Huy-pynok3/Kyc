@@ -1,71 +1,4 @@
-// import {
-//     AdminHeader,
-//     AdminLogin,
-//     ManualApprove,
-//     KycTable,
-//     RejectionModal,
-//     AdminSessionCard,
-//     UploadedImagesViewer }
 
-// from "@/components/Admin";
-
-// import { useAuth } from "../hooks/useAuth";
-// import { useKyc } from "../hooks/useKyc";
-// import { useSessions } from "../hooks/useSessions";
-
-// export default function AdminPage() {
-//   const { token, password, setPassword, handleLogin, handleLogout } = useAuth();
-//   const {
-//     list,
-//     loading,
-//     manualWallet,
-//     setManualWallet,
-//     rejectionModal,
-//     setRejectionModal,
-//     handleManualApprove,
-//     handleUpdateStatus,
-//     handleDeleteKyc,
-//     handleConfirmRejection,
-//   } = useKyc(token);
-//   const { sessions } = useSessions();
-
-//   if (!token) {
-//     return <AdminLogin password={password} setPassword={setPassword} handleLogin={handleLogin} />;
-//   }
-
-//   return (
-//     <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
-//       <AdminHeader handleLogout={handleLogout} />
-//       <ManualApprove
-//         manualWallet={manualWallet}
-//         setManualWallet={setManualWallet}
-//         handleManualApprove={handleManualApprove}
-//       />
-//       <KycTable
-//         list={list}
-//         loading={loading}
-//         handleUpdateStatus={handleUpdateStatus}
-//         handleDeleteKyc={handleDeleteKyc}
-//         setRejectionModal={setRejectionModal}
-//       />
-//       <div className="bg-gray-100 p-4 mt-6 rounded">
-//         <h1 className="text-lg sm:text-xl font-bold mb-4 text-center">🧾 Danh sách phiên KYC</h1>
-//         <div className="space-y-4">
-//           {sessions.map((session) => (
-//             <AdminSessionCard key={session._id} session={session} />
-//           ))}
-//         </div>
-//       </div>
-//       <RejectionModal
-//         rejectionModal={rejectionModal}
-//         setRejectionModal={setRejectionModal}
-//         handleConfirmRejection={handleConfirmRejection}
-//       />
-//     </div>
-//   );
-// }
-
-// src/pages/AdminPage.jsx
 import React, { useState } from "react";
 import {
     AdminHeader,
@@ -74,7 +7,6 @@ import {
     KycTable,
     RejectionModal,
     AdminSessionCard,
-    // UploadedImagesViewer,
 } from "@/components/Admin";
 import { useAuth } from "../hooks/useAuth";
 import { useKyc } from "../hooks/useKyc";
@@ -95,7 +27,7 @@ export default function AdminPage() {
         handleConfirmRejection,
     } = useKyc(token);
     const { sessions } = useSessions();
-    const [activeTab, setActiveTab] = useState("sessions"); // Quản lý tab hiện tại
+    const [activeTab, setActiveTab] = useState("sessions"); 
 
     if (!token) {
         return <AdminLogin password={password} setPassword={setPassword} handleLogin={handleLogin} />;
