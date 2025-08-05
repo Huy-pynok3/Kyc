@@ -10,7 +10,9 @@ import case1 from "./case1.png";
 import case2 from "./case2.png";
 import zalo from "./icons8-zalo-48.png";
 import shopee from "./icons8-shopee-48.png";
-
+import orange from './orange.png'
+import pinkbean from './pinkbean.png'
+import slime from './slime.png'
 
 export default {
     metamask,
@@ -25,4 +27,7 @@ export default {
     case2,
     zalo,
     shopee,
+    orange,
+    pinkbean,
+    slime,
 }
