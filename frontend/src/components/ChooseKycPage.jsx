@@ -1,8 +1,14 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import FloatingMascots from "./FloatingMascots";
 import img from "@/images";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useTranslation } from 'react-i18next';
+
 
 export default function ChooseKycPage() {
+
+    const { t, i18n } = useTranslation('home');
+
     // const location = useLocation();
     const navigate = useNavigate();
     // const walletData = location.state;
@@ -12,11 +18,12 @@ export default function ChooseKycPage() {
             navigate("/maplestory");
             // navigate("/kyc", { state: { ...walletData, kycType: type } });
         } else {
-            alert("Tính năng đang phát triển. Vui lòng quay lại sau!");
+            alert(t("choose_kyc.coming_soon_alert"));
         }
     };
 
     return (
+
         <div
             className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4"
             style={{
@@ -29,10 +36,13 @@ export default function ChooseKycPage() {
                 backgroundSize: "1410px auto, cover",
             }}
         >
+
             <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-6 space-y-6 text-center">
-                <h1 className="text-2xl font-bold text-indigo-700">Service KYC</h1>
+
+                <h1 className="text-2xl font-bold text-indigo-700">{t("choose_kyc.title")}</h1>
+                <p style={{display: 'none'}}>Current Lang: {i18n.language}</p>
                 <p className="text-gray-600 text-sm">
-                    🚀 Vui lòng chọn nền tảng bạn muốn xác minh để tiếp tục quá trình KYC.
+                    {t('choose_kyc.subtitle')}
                 </p>
 
                 <div className="grid gap-3">
@@ -70,7 +80,7 @@ export default function ChooseKycPage() {
                 </div>
                 <div className="text-sm text-gray-600 flex items-center justify-center gap-1">
                     <span>
-                        💬 Cần hỗ trợ? Liên hệ&nbsp;
+                        💬 {t("choose_kyc.support_text")}&nbsp;
                         <a
                             href="https://t.me/minelx57"
                             target="_blank"
@@ -82,7 +92,14 @@ export default function ChooseKycPage() {
                     </span>
                 </div>
             </div>
+
+            <div className="absolute top-0 right-0 p-5 max-md:p-2">
+                <LanguageSwitcher/>
+            </div>
+                
             <FloatingMascots />
         </div>
+
+
     );
 }

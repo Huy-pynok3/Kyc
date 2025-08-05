@@ -1,0 +1,46 @@
+{
+    "title": "Hướng dẫn KYC MapleStory N",
+    "back": "← Quay lại",
+    "issues_title": "Tình trạng thường gặp",
+    "title_step": "Các bước thực hiện",
+    "preSteps": [
+        {
+          "title": "Bạn chưa xác minh danh tính (KYC) trong MapleStory N",
+          "image": "img.case1",
+          "description": "Để chơi MapleStory N có 2 cách:\n1. Hold 10 NXPC = gần 300k trong ví chỉ để được vào game – và không được dùng tiền đó.\n2. Giải pháp tiết kiệm hơn: bên mình sẽ KYC hộ bạn qua link."
+        }
+      ],
+      "steps": [
+        {
+          "title": "Bước 1: Chọn avatar và click Verification",
+          "image": "img.step1"
+        },
+        {
+          "title": "Bước 2: Chọn Proceed",
+          "image": "img.step2"
+        },
+        {
+          "title": "Bước 3.1: Quét mã QR",
+          "description": "Sau khi quét mã QR, bạn sẽ thấy link KYC. Hãy sao chép link dạng https://form.argosidentity.com/?pid=p4n42yhhy1&... và dán vào form KYC bên mình",
+          "image": "img.step3"
+        },
+        {
+          "title": "Bước 3.2: Hoặc bạn có thể upload QR",
+          "description": "Nếu bạn không thể quét mã QR, hãy tải ảnh mã QR lên và hệ thống sẽ tự giải mã QR và tự động điền link cho bạn. Để chính xác, bạn hãy cắt QR gọn nhất có thể.",
+          "image": "img.step6"
+        },
+        {
+          "title": "Bước 4: Bên mình sẽ thực hiện KYC cho bạn",
+          "image": "img.step5"
+        },
+        {
+          "title": "Bước 5: Khi hoàn tất Verification lên level 1",
+          "image": "img.step4"
+        }
+      ],
+    "warning": {
+      "title": "⚠️ Cảnh báo lừa đảo:",
+      "text": "Cẩn thận các nhóm ảo, cá nhân, \"hướng dẫn newbie\" nhưng lại bày chiêu trò “không cần KYC vẫn chơi được” – dễ dính scam! Ví Metamask không đổi được 12 ký tự, private key nó là duy nhất lộ là coi như mất. Hãy chỉ làm KYC từ nguồn tin cậy!"
+    }
+  }
+  

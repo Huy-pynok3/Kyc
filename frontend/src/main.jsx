@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 import { WalletProvider } from "@/contexts/WalletProvider";
 import { BrowserRouter } from "react-router-dom";
+import '@/i18n/i18n';
 
 
 createRoot(document.getElementById("root")).render(

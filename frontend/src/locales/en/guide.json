@@ -1,0 +1,46 @@
+{
+    "title": "KYC Guide for MapleStory N",
+    "back": "← Back",
+    "issues_title": "Common Issues",
+    "title_step": "Implementation steps",
+    "preSteps": [
+        {
+            "title": "You haven't verified your identity (KYC) in MapleStory N",
+            "image": "img.case1",
+            "description": "To play MapleStory N, there are 2 options:\n1. Hold 10 NXPC (~ $10) just to enter the game – and you cannot spend that.\n2. A cheaper solution: We’ll verify KYC for you via a link."
+        }
+        ],
+    "steps": [
+    {
+        "title": "Step 1: Select avatar and click Verification",
+        "image": "img.step1"
+    },
+    {
+        "title": "Step 2: Click Proceed",
+        "image": "img.step2"
+    },
+    {
+        "title": "Step 3.1: Scan the QR code",
+        "image": "img.step3",
+        "description": "After scanning, you'll see a KYC link like https://form.argosidentity.com/?pid=... Copy and paste it into our KYC form."
+    },
+    {
+        "title": "Step 3.2: Or upload the QR image",
+        "image": "img.step6",
+        "description": "If you can’t scan, upload the image instead. The system will auto-extract the link. Crop the image for best accuracy."
+    },
+    {
+        "title": "Step 4: We will complete the KYC process for you",
+        "image": "img.step5"
+    },
+    {
+        "title": "Step 5: When completed, you’ll reach level 1 verification",
+        "image": "img.step4"
+    }
+    ],
+    "warning": {
+      "title": "⚠️ Scam Alert:",
+      "text": "Beware of fake groups, individuals, or 'newbie guides' that say 'you can play without KYC' — it's likely a scam! Metamask wallets can’t regenerate the same 12 words, the private key is unique. If leaked, your funds are gone. Only do KYC from trusted sources!"
+    }
+  }
+  

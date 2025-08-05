@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
+import { useTranslation } from 'react-i18next';
 
 // const emojis = ["🐸", "🦄", "🐼", "🧙‍♂️", "👾", "🦊", "🐢", "🐤"];
 const emojis = [
@@ -19,6 +20,8 @@ function shorten(wallet) {
 
 export default function ToastDisplay({ mode = "real" }) {
   const lastWallet = useRef(null);
+
+  const { t } =  useTranslation('toast')
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -43,8 +46,8 @@ export default function ToastDisplay({ mode = "real" }) {
       if (wallet && wallet !== lastWallet.current) {
         lastWallet.current = wallet;
 
-        toast.success(`${getRandomEmoji()} Ví ${shorten(wallet)} vừa hoàn tất KYC!`, {
-          duration: 10000,
+        toast.success(`${getRandomEmoji()} ${t('toast_after')} ${shorten(wallet)} ${t('toast_before')}`, {
+          duration: 4000,
         });
         // toast.success(`🎉 Ví ${shorten(wallet)} vừa hoàn tất KYC!`, {
         //     icon: getRandomEmoji(),

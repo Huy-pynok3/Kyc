@@ -1,0 +1,15 @@
+{
+    "title": "Dịch vụ KYC cho MapleStory N",
+    "description": "📝 Để sử dụng dịch vụ KYC, vui lòng kết nối ví của bạn và xác nhận chữ ký. Sau khi KYC, bạn sẽ đủ điều kiện chơi MapleStory N hoặc nhận NXPC token.",
+    "guide": "📘 Hướng dẫn KYC và lấy link",
+    "back_home": "← Quay lại trang chủ",
+
+    "step1_title": "Bước 1: Kết nối ví và ký xác nhận",
+    "tooltip_title": "Tại sao cần ký ví?",
+    "tooltip_description": "<strong>Ký ví Metamask KHÔNG làm mất ví.</strong> Đây chỉ là bước xác nhận bạn là chủ sở hữu ví. Hệ thống <strong>không yêu cầu gửi coin, không lưu private key</strong> và <strong>không tốn phí gas.</strong> Bạn có thể kiểm tra nội dung trước khi ký.",
+    "connect_button": "Kết nối & ký Metamask",
+    "signing": "Đang ký...",
+    "continue": "Tiếp tục",
+    "error_no_metamask": "Vui lòng cài đặt Metamask extension trên trình duyệt."
+  }
+  

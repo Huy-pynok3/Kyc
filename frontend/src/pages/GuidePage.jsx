@@ -1,66 +1,74 @@
 import { useNavigate } from "react-router-dom";
 import img from "@/images"; 
 import { useState } from "react";
-const preSteps = [
-    {
-        title: "Bạn chưa xác minh danh tính (KYC) trong MapleStory N",
-        image: img.case1,
-        description: "Để chơi MapleStory N có 2 cách:\n1. Hold 10 NXPC = gần 300k trong ví chỉ để được vào game – và không được dùng tiền đó. \n2. Giải pháp tiết kiệm hơn bên mình sẽ KYC hộ bạn qua link.",
-    },
-    //   {
-    //     title: "Để chơi MapleStory N.Có 2 cách",
-    //     image: img.case2,
-    //   },
-];
+import { useTranslation } from "react-i18next";
+// const preSteps = [
+//     {
+//         title: "Bạn chưa xác minh danh tính (KYC) trong MapleStory N",
+//         image: img.case1,
+//         description: "Để chơi MapleStory N có 2 cách:\n1. Hold 10 NXPC = gần 300k trong ví chỉ để được vào game – và không được dùng tiền đó. \n2. Giải pháp tiết kiệm hơn bên mình sẽ KYC hộ bạn qua link.",
+//     },
 
-const steps = [
-    {
-        title: "Bước 1: Chọn avatar và click Verification",
-        image: img.step1,
-    },
-    {
-        title: "Bước 2: Chọn Proceed",
-        image: img.step2,
-    },
-    {
-        title: "Bước 3.1: Quét mã QR",
-        description: "Sau khi quét mã QR, bạn sẽ thấy link KYC. Hãy sao chép link dạng https://form.argosidentity.com/?pid=p4n42yhhy1&... và dán vào form KYC bên mình",
-        image: img.step3,
-    },
-    {
-        title: "Bước 3.2: Hoặc bạn có thể upload QR",
-        description: "Nếu bạn không thể quét mã QR, hãy tải ảnh mã QR lên và hệ thống sẽ tự giải mã QR và tự động điền link cho bạn.Để chính xác bạn hãy cắt QR gọn nhất có thể.",
-        image: img.step6,
-    },
-    {
-        title: "Bước 4: Bên mình sẽ thực hiện KYC cho bạn",
-        image: img.step5,
-    },
-    {
-        title: "Bước 5: Khi hoàn tất Verification lên level 1",
-        image: img.step4,
-    },
-];
+// ];
+
+// const steps = [
+//     {
+//         title: "Bước 1: Chọn avatar và click Verification",
+//         image: img.step1,
+//     },
+//     {
+//         title: "Bước 2: Chọn Proceed",
+//         image: img.step2,
+//     },
+//     {
+//         title: "Bước 3.1: Quét mã QR",
+//         description: "Sau khi quét mã QR, bạn sẽ thấy link KYC. Hãy sao chép link dạng https://form.argosidentity.com/?pid=p4n42yhhy1&... và dán vào form KYC bên mình",
+//         image: img.step3,
+//     },
+//     {
+//         title: "Bước 3.2: Hoặc bạn có thể upload QR",
+//         description: "Nếu bạn không thể quét mã QR, hãy tải ảnh mã QR lên và hệ thống sẽ tự giải mã QR và tự động điền link cho bạn.Để chính xác bạn hãy cắt QR gọn nhất có thể.",
+//         image: img.step6,
+//     },
+//     {
+//         title: "Bước 4: Bên mình sẽ thực hiện KYC cho bạn",
+//         image: img.step5,
+//     },
+//     {
+//         title: "Bước 5: Khi hoàn tất Verification lên level 1",
+//         image: img.step4,
+//     },
+// ];
+const getImage = (imageKey) => {
+    const keys = imageKey.split(".");
+    return keys.reduce((obj, key) => obj?.[key], { img });
+  };
 
 export default function GuidePage() {
+
+    const { t } = useTranslation("guide");
+
+    const preSteps = t("preSteps", { returnObjects: true });
+    const steps = t("steps", { returnObjects: true });
+
     const navigate = useNavigate();
     const [previewImage, setPreviewImage] = useState(null);
 
     return (
         <div className="min-h-screen bg-gray-50 px-4 py-10">
             <div className="max-w-4xl mx-auto space-y-8">
-                <h1 className="text-3xl font-bold text-center text-indigo-700">Hướng dẫn thực hiện KYC</h1>
+                <h1 className="text-3xl font-bold text-center text-indigo-700">{t("title")}</h1>
 
                 <div className="mt-6 text-center">
                     <button onClick={() => navigate("/maplestory")} className="text-blue-600 hover:underline">
-                        ← Quay về trang chính
+                        {t("back")}
                     </button>
                 </div>
 
                 {/* Section các trường hợp */}
                 <div className="space-y-6">
                     <h2 className="text-xl font-semibold text-red-600 text-center">
-                        Nếu bạn đang gặp vấn đề như này
+                    {t("issues_title")}
                     </h2>
 
                     {preSteps.map((caseItem, idx) => (
@@ -70,7 +78,8 @@ export default function GuidePage() {
 
                         >
                             <img
-                                src={caseItem.image}
+                                // src={caseItem.image}
+                                src={getImage(caseItem.image)}
                                 alt={caseItem.title}
                                 className="w-full sm:w-64 rounded-md border cursor-pointer hover:opacity-80 transition"
                                 onClick={() => setPreviewImage(caseItem.image)}
@@ -87,14 +96,15 @@ export default function GuidePage() {
                     ))}
 
                     <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded-md">
-                        <p className="font-semibold">⚠️ Cảnh báo lừa đảo:</p>
-                        <p>Cẩn thận các nhóm ảo, cá nhân, "hướng dẫn newbie" nhưng lại bày chiêu trò “không cần KYC vẫn chơi được” – dễ dính scam! Ví Metamask không đổi được 12 ký tự, private key nó là duy nhất lộ là coi như mất. Hãy chỉ làm KYC từ nguồn tin cậy!</p>
+                        <p className="font-semibold">{t("warning.title")}</p>
+                        {/* <p>Cẩn thận các nhóm ảo, cá nhân, "hướng dẫn newbie" nhưng lại bày chiêu trò “không cần KYC vẫn chơi được” – dễ dính scam! Ví Metamask không đổi được 12 ký tự, private key nó là duy nhất lộ là coi như mất. Hãy chỉ làm KYC từ nguồn tin cậy!</p> */}
+                        <p>{t("warning.text")}</p>
                     </div>
                 </div>
 
                 {/* Section hướng dẫn các bước */}
                 <div className="space-y-6">
-                    <h2 className="text-xl font-semibold text-indigo-600 text-center">Các bước thực hiện</h2>
+                    <h2 className="text-xl font-semibold text-indigo-600 text-center">{t("title_step")}</h2>
                     {steps.map((step, idx) => (
                         <div
                             key={idx}
@@ -102,10 +112,11 @@ export default function GuidePage() {
                         >
                             {/* <img src={step.image} alt={step.title} className="w-full sm:w-64 rounded-md border" /> */}
                             <img
-                                src={step.image}
+                                // src={step.image}
+                                src={getImage(step.image)}
                                 alt={step.title}
                                 className="w-full sm:w-64 rounded-md border cursor-pointer hover:opacity-80 transition"
-                                onClick={() => setPreviewImage(step.image)}
+                                onClick={() => setPreviewImage(getImage(step.image))}
                             />
 
                             <div className="flex-1 text-center sm:text-left">
@@ -131,7 +142,7 @@ export default function GuidePage() {
 
                 <div className="mt-6 text-center">
                     <button onClick={() => navigate("/maplestory")} className="text-blue-600 hover:underline">
-                        ← Quay về trang chính
+                        {t("back")}
                     </button>
                 </div>
             </div>

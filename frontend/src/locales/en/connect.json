@@ -1,0 +1,15 @@
+{
+    "title": "KYC Service for MapleStory N",
+    "description": "📝 To use the KYC service, please connect your wallet and sign the message. After KYC, you’ll be eligible to play MapleStory N or receive NXPC tokens.",
+    "guide": "📘 KYC Guide and Get Link",
+    "back_home": "← Back to Home",
+
+    "step1_title": "Step 1: Connect your wallet and sign",
+    "tooltip_title": "Why do I need to sign?",
+    "tooltip_description": "<strong>Signing with Metamask does NOT risk your wallet.</strong> This is just to verify that you are the owner of the wallet. The system <strong>does not ask for coins, does not store your private key</strong>, and <strong>does not cost any gas fee.</strong> You can review the message before signing.",
+    "connect_button": "Connect & Sign with Metamask",
+    "signing": "Signing...",
+    "continue": "Continue",
+    "error_no_metamask": "Please install Metamask extension in your browser."
+  }
+  

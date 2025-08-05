@@ -3,8 +3,13 @@ import { Button } from "@/components/ui/button";
 import { WalletContext } from "@/contexts/WalletContext";
 import { HelpCircle } from "lucide-react";
 import useTooltip from "@/hooks/useTooltip";
+import { useTranslation } from "react-i18next";
+import { Trans } from 'react-i18next';
 
 export default function WalletConnect({ onSigned }) {
+
+    const { t } = useTranslation("connect"); 
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const { wallet, connectWallet } = useContext(WalletContext); // lấy hàm connectWallet từ context
@@ -70,12 +75,12 @@ export default function WalletConnect({ onSigned }) {
     return (
         <div className="relative p-4 space-y-4 border rounded-xl shadow-md max-w-md mx-auto">
             <div className="flex justify-center items-center gap-1 relative">
-                <h2 className="text-lg font-semibold">Bước 1: Kết nối ví và ký xác nhận</h2>
+                <h2 className="text-lg font-semibold">{t('step1_title')}</h2>
                 <button
                     ref={iconRef}
                     className="text-blue-600 hover:text-blue-800 focus:outline-none relative"
                     onClick={() => setShowTooltip((prev) => !prev)}
-                    title="Tại sao cần ký ví ?"
+                    title={t("tooltip_title")}
                 >
                     <HelpCircle className="w-4 h-4 text-blue-600 cursor-pointer animate-bounce" />
                 </button>
@@ -99,18 +104,17 @@ export default function WalletConnect({ onSigned }) {
                         }}
                     />
                     <p className="text-sm text-gray-500 bg-gray-100 p-3 rounded-lg border border-gray-200">
-                        <strong>Ký ví Metamask KHÔNG làm mất ví.</strong> Đây chỉ là bước xác nhận bạn là chủ sở hữu ví.
-                        Hệ thống
-                        <strong> không yêu cầu gửi coin, không lưu private key</strong> và
-                        <strong> không tốn phí gas.</strong> Bạn có thể kiểm tra nội dung trước khi ký.
+                        {/* {t("tooltip_description")} */}
+                        <Trans i18nKey={t("tooltip_description")} ns="submit" components={{ strong: <strong /> }} />
+
                     </p>
                 </div>
             )}
             {wallet ? (
-                <Button className="cursor-pointer" onClick={() => onSigned({ wallet })}>Tiếp tục</Button>
+                <Button className="cursor-pointer" onClick={() => onSigned({ wallet })}>{t("continue")}</Button>
             ) : (
                 <Button className="cursor-pointer" onClick={connectAndSign} disabled={loading}>
-                    {loading ? "Đang ký..." : "Kết nối & ký Metamask"}
+                    {loading ? t("signing") : t("connect_button")}
                 </Button>
             )}
 

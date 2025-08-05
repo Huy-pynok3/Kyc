@@ -1,0 +1,21 @@
+{
+    "step_title": "Step 2: 💸 KYC Payment",
+    "method_title": "💳 Choose payment method",
+    "method_crypto": "Crypto (USDT)",
+    "method_bank": "Vietnamese Bank",
+    "countdown": "⏳ Time left: <1>{{time}}</1>",
+    "crypto_notice": "💰 Please send <1>{{usdt}}</1> USDT (BEP-20) to the address below:",
+    "crypto_note_wallet": "If you are sending from an exchange (Binance, OKX,...), please enter the wallet you used:",
+    "crypto_input_placeholder": "The wallet you used to transfer",
+    "crypto_submit_note": "Then press the button below to check payment.",
+    "crypto_submit_btn": "I have paid",
+    "crypto_checking": "Checking...",
+    "crypto_failed": "🕒 Please try again after a few minutes.",
+    "bank_notice": "💸 Please transfer <1>{{amount}}</1> to the following account:",
+    "bank_details": "Bank: VietinBank\nAccount No: <1>101877183706</1>\nNote: <2>{{note}}</2>",
+
+    "bank_failed": "❌ {{message}}",
+    "expired": "The payment session has expired. Please create a new session.",
+    "reload_session": "🔄 Create new session"
+  }
+  
