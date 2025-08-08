@@ -76,7 +76,7 @@ router.post("/sessions/new", verifyToken, async (req, res) => {
     }
 
     try {
-        const emojiList = ["🔥", "🚀", "🌈", "🎯", "💎", "🦄", "🌟", "🍀"];
+        const emojiList = ["🔥", "🚀", "🌈", "🎯", "💎", "🦄", "🌟", "🍀", "🦊"];
         const randomEmoji = emojiList[Math.floor(Math.random() * emojiList.length)];
         const randomSessionId = "KYC#" + Math.random().toString(36).substring(2, 8).toUpperCase();
 

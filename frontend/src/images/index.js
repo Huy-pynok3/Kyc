@@ -13,6 +13,7 @@ import shopee from "./icons8-shopee-48.png";
 import orange from './orange.png'
 import pinkbean from './pinkbean.png'
 import slime from './slime.png'
+import pagenotfound from './http_error_bg.png'
 
 export default {
     metamask,
@@ -30,4 +31,5 @@ export default {
     orange,
     pinkbean,
     slime,
+    pagenotfound,
 }

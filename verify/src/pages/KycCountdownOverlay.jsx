@@ -6,7 +6,7 @@ export default function KycCountdownOverlay() {
     // Lấy studentId từ localStorage hoặc mặc định là "unknown"
     const studentId = localStorage.getItem("studentId") || "unknown";
     const { kycId } = useParams();
-    const [timeLeft, setTimeLeft] = useState(300);
+    const [timeLeft, setTimeLeft] = useState(null);
     const [confirmed, setConfirmed] = useState(false);
 
     const [kycSessionId, setKycSessionId] = useState("");
@@ -16,18 +16,37 @@ export default function KycCountdownOverlay() {
     const navigate = useNavigate();
     const [startedAt, setStartedAt] = useState(null); // dùng để tính countdown
     const [emoji, setEmoji] = useState(null);
-    const [currentTime, setCurrentTime] = useState(new Date());
+    const [currentTime, setCurrentTime] = useState(null);
 
     if (studentId === "unknown") {
         navigate("/");
     }
     useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentTime(new Date());
-        }, 1000);
+        let baseTime = null;
+        let timer = null;
 
-        return () => clearInterval(interval);
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/server-time`) 
+            .then(res => res.json())
+            .then(data => {
+                baseTime = new Date(data.serverTime).getTime(); 
+                setCurrentTime(new Date(baseTime));
+
+                timer = setInterval(() => {
+                    baseTime += 1000;
+                    setCurrentTime(new Date(baseTime));
+                }, 1000);
+            });
+
+        return () => clearInterval(timer);
     }, []);
+
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         setCurrentTime(new Date());
+    //     }, 1000);
+
+    //     return () => clearInterval(interval);
+    // }, []);
 
     // Load KYC info
     useEffect(() => {
@@ -99,8 +118,11 @@ export default function KycCountdownOverlay() {
 
     // Countdown sync theo thời gian thực từ startedAt
     useEffect(() => {
-        if (!kycData?.startedAt) return;
-        const startTime = new Date(kycData.startedAt).getTime();
+        // if (!kycData?.startedAt) return;
+        // const startTime = new Date(kycData.startedAt).getTime();
+        if (!startedAt) return;
+
+        const startTime = new Date(startedAt).getTime(); // dùng startedAt từ session
         if (isNaN(startTime)) {
             console.error("LỖI: startedAt không hợp lệ:", kycData.startedAt);
             return;
@@ -108,7 +130,7 @@ export default function KycCountdownOverlay() {
         const updateCountdown = () => {
             const now = Date.now();
             const diff = Math.floor((now - startTime) / 1000);
-            const remaining = Math.max(0, 360 - diff);
+            const remaining = Math.max(0, 300 - diff);
             setTimeLeft(remaining);
 
             if (remaining === 0) {
@@ -140,7 +162,7 @@ export default function KycCountdownOverlay() {
         updateCountdown();
         const interval = setInterval(updateCountdown, 1000);
         return () => clearInterval(interval);
-    }, [kycData]);
+    }, [startedAt]);
 
 
 
@@ -187,9 +209,9 @@ export default function KycCountdownOverlay() {
     };
 
     if (!kycData) return <div className="p-4">Đang tải dữ liệu phiên KYC...</div>;
-    function formatTime(date) {
-        return date.toLocaleTimeString("vi-VN", { hour12: false });
-    }
+
+    const formatTime = (date) =>
+        date?.toLocaleTimeString("vi-VN", { hour12: false });
 
     return (
         <div className="relative">
@@ -197,7 +219,12 @@ export default function KycCountdownOverlay() {
             <div className="fixed top-2 left-2 bg-white/80 p-2 rounded shadow text-xs z-50">
                 <div className="text-gray-500">{formatTime(currentTime)}</div>
                 <div className="font-semibold text-gray-700">
-                    ⏱️ {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, "0")} | {emoji}
+                    {
+                        timeLeft === null ? (<p><strong>⏱️ Đang tải...</strong></p>) :
+                        (<>
+                            ⏱️ {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, "0")} | {emoji}
+                        </>)
+                    }
                 </div>
                 <div>
                     Mã: <strong>{kycSessionId ? kycSessionId : "Đang khởi tạo..."}</strong>

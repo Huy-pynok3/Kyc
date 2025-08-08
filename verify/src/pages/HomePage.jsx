@@ -51,6 +51,12 @@ const HomePage = () => {
         </div>
 
         <div className="space-y-6 ">
+
+        {/* <div className="bg-yellow-50 bg-opacity-90 border border-yellow-300 p-4 rounded-xl text-sm text-center">
+            <p className="text-red-800 mt-2 font-medium">
+            🧼 Bắt buộc: Trong thời gian KYC  <strong>KHÔNG CẮM SẠC hoặc bật Bluetooth</strong> các bạn nên tuân thủ.
+            </p>
+          </div> */}
           {/* Bước 1 */}
           <div className="bg-white bg-opacity-90 p-4 rounded-xl shadow-sm">
             <h2 className="font-semibold mb-2 text-gray-900">🔹 Bước 1: Nhấn "Nhận đơn"</h2>

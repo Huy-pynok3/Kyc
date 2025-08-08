@@ -60,6 +60,12 @@ app.use("/api/kyc", kycRoutes);
 app.use("/api/kyc", kycPublicRoutes);
 app.use("/api", paymentRoutes);
 
+app.get('/api/server-time', (req, res) => {
+    const now = new Date();
+    res.json({ serverTime: now.toISOString() });
+});
+
+
 if (process.env.USE_CLOUDINARY !== "true") {
     app.use("/uploads", express.static("uploads"));
 }
